@@ -7,3 +7,5 @@ data/*.db-*
 exports/
 logs/
 config/settings.local.yaml
+data/overture/
+data/uploads/
