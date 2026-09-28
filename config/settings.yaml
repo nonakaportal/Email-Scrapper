@@ -1,0 +1,136 @@
+# LeadScout runtime settings. Every value here overrides the built-in default
+# in leadscout/config.py; delete a key to fall back to the default.
+
+# Sent with every request (website visits, place search, Wikidata). Public services
+# ask for an honest, identifying User-Agent; contact_email is appended to it.
+user_agent: "LeadScout/0.1 (self-hosted B2B research tool)"
+contact_email: ""
+
+paths:
+  database: data/leadscout.db
+  exports: exports
+
+nominatim:
+  base_url: https://nominatim.openstreetmap.org
+  min_interval_seconds: 1.1   # public policy: max 1 request/second
+  cache_days: 90
+  # Used when a place resolves to a point (e.g. a small town mapped as a node)
+  # instead of a boundary: search this radius around it.
+  fallback_radius_km: 10
+
+# Businesses come from Overture Maps (free open data, no key): only the part of the
+# data for the searched place is downloaded, and kept in data/overture/ for cache_days.
+overture:
+  release:                  # empty = latest monthly release (e.g. 2026-09-23.1)
+  min_confidence: 0.5       # skip places Overture itself is unsure about (0-1)
+  tile_degrees: 0.5         # big areas (states, countries) are downloaded in parts...
+  max_tiles: 64             # ...of this size, never more than this many
+  cache_days: 30
+
+crawler:
+  max_pages_per_site: 5
+  timeout_seconds: 15
+  retries: 2
+  per_domain_min_interval_seconds: 2.0
+  global_concurrency: 16         # websites crawled at the same time (each still 1 page / 2 s)
+  max_page_bytes: 2000000
+  respect_robots_txt: true
+
+email:
+  verify_mx: true
+  dns_timeout_seconds: 5
+  dns_cache_days: 7
+  dns_concurrency: 16
+  # Mailbox check ("full" verification): ask each company's mail server whether the
+  # address exists, then hang up (no email is sent). Needs outbound port 25, which most
+  # home internet and cloud hosts block; the step skips itself when it is closed.
+  smtp_check: false                  # default for new runs (New search can override)
+  smtp_from_domain: ""               # a domain you own, e.g. mycompany.com (best results); empty = MAIL FROM:<>
+  smtp_checks_per_provider_per_minute: 6    # connections; all Google Workspace domains share one limit
+  smtp_concurrency: 8
+  smtp_timeout_seconds: 10
+  smtp_cache_days: 14
+  # With full verification: guess the email of decision makers named on the website
+  # without a published address (from the company's own format, e.g. rebecca@ -> chris@)
+  # and keep it only when the mail server confirms it. Shown in yellow; written emails first.
+  guess_emails: true
+
+# Extra site builders where each subdomain is a separate business (on top of the
+# built-in list in leadscout/normalize.py, e.g. wixsite.com, squarespace.com).
+shared_hosting_domains: []
+
+# Website hosts that are not business-owned domains. A business whose only
+# website is one of these gets website_status = social_only and is not crawled.
+non_business_domains:
+  - facebook.com
+  - instagram.com
+  - twitter.com
+  - x.com
+  - linkedin.com
+  - youtube.com
+  - tiktok.com
+  - yelp.com
+  - linktr.ee
+  - google.com
+  - goo.gl
+  - business.site
+  - wa.me
+  - tripadvisor.com
+  - booking.com
+  - yellowpages.com
+
+# Keeping big companies out of a small-business list. Chains are handled by
+# filters.exclude_chains; these checks flag large and non-commercial organisations
+# the same way (excluded unless you include chains).
+size_check:
+  # Look the company up on Wikidata (free, public). Wikimedia requires a contact
+  # in the User-Agent, so this only runs when contact_email is set.
+  wikidata: true
+  min_interval_seconds: 0.3
+  cache_days: 90
+  max_employees: 250               # more than this (per Wikidata) = large company
+  exclude_wikipedia_notable: true  # has a Wikipedia article = not a small business
+  intl_site_languages: 6           # website offered in this many language/country versions
+  investor_relations: true         # website has an investor relations section (listed company)
+  non_commercial_suffixes: [".edu", ".gov", ".mil", ".int", ".gov.uk", ".ac.uk", ".nhs.uk",
+                            ".edu.au", ".gov.au", ".gc.ca", ".gouv.fr", ".gov.in", ".nic.in",
+                            ".ac.in", ".edu.in"]
+
+# Defaults for new runs. CLI flags override these per run.
+filters:
+  require_website: true
+  exclude_chains: true
+  chain_name_repeat_threshold: 3   # same name at >= N places = chain
+  max_results: 2000                # businesses per run
+  min_score: 0
+  # At most this many email contacts are collected and exported per company.
+  # The best are kept: named people first, then info@-style inboxes, then
+  # department inboxes; the company's own domain before gmail & co.
+  max_contacts_per_company: 3
+  # A map listing updated within this many months counts as a sign the business is active.
+  listing_fresh_months: 18
+
+# Lead score weights (0-100 with the defaults). See PROJECT.md section 9.
+scoring:
+  email_valid: 25
+  email_risky: 10
+  email_personal: 15
+  email_generic: 5
+  email_role: 3
+  independent: 20
+  single_location: 10
+  has_phone: 10
+  website_active: 10
+  website_active_years: 2
+  has_social: 5
+  small_team: 5
+  small_team_max_people: 50
+
+export:
+  default_statuses: [valid]
+  # company = one lead per company: its best email, colleagues in other_emails
+  # email   = one row per email address
+  mode: company
+  format: csv      # csv | xlsx
+  # Businesses to export by default: active, likely active, unclear, likely closed.
+  activity: [active, likely active]

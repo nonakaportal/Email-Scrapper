@@ -1,0 +1,421 @@
+# Industries: 50 broad small-business categories, construction first (rank = order).
+# Businesses come from Overture Maps (https://overturemaps.org), whose places have a
+# category path such as  services_and_business > home_service > plumbing.
+#
+# overture:  Overture categories (at any level of the path) this industry covers. A business
+#            belongs to the industry of the deepest category in its path listed here.
+# aliases:   other words users may type for this industry (terminal commands).
+# _exclude:  categories that are never leads (banks, hospitals, government ...).
+
+_groups:
+  construction: "Construction & Trades"
+  home_services: "Home & Property Services"
+  professional: "Professional Services"
+  healthcare: "Healthcare & Wellness"
+  retail: "Retail"
+  food: "Food & Hospitality"
+  property: "Real Estate & Property"
+  automotive: "Automotive & Transportation"
+  creative: "Creative & Media"
+  personal: "Education & Personal Care"
+  industrial: "Industrial, Wholesale & Community"
+
+_exclude: ["atm", "bank_or_credit_union", "money_transfer_service", "check_cashing_payday_loans", "currency_exchange", "holding_company", "private_equity_firm", "hospital", "college_university", "public_school", "elementary_school", "middle_school", "high_school", "charter_school", "government_office", "post_office", "public_utility", "public_transit_facility_or_service", "military_site", "labor_union", "political_organization", "gold_buyer", "coin_dealer", "recycling_center", "donation_center", "mailbox_center"]
+
+# ----------------------------------------------------------------------
+# Construction & Trades
+# ----------------------------------------------------------------------
+
+construction:
+  label: "Construction & contractors"
+  rank: 1
+  group: construction
+  overture: ["building_or_construction_service", "contractor", "builder", "ceiling_and_roofing_repair_and_service", "hvac_service", "electrician", "plumbing", "painting", "solar_installation", "masonry_concrete", "masonry_contractor", "countertop_installation", "carpenter", "windows_installation", "cabinet_sales_service", "glass_and_mirror_sales_service", "foundation_repair", "bathroom_remodeling", "kitchen_remodeling", "door_sales_service", "garage_door_service", "fence_and_gate_sales_service", "insulation_installation", "patio_covers", "tiling", "grout_service", "deck_and_railing_sales_service", "demolition_service", "well_drilling", "drywall_service", "excavation_service", "siding", "gutter_service", "carpet_installation", "refinishing_service", "fire_protection_service", "structural_engineer", "engineering_service", "civil_engineer", "mechanical_engineer", "road_contractor", "welder", "crane_service", "inspection_service", "construction_management", "interior_design", "architectural_designer", "architect", "land_surveying", "home_inspector", "blueprinter"]
+  aliases: ["general contractor", "General contractors and home builders", "construction company", "contractor", "Home builders", "homebuilder", "house builder", "custom home builder", "remodeler", "Remodeling contractors (incl. kitchen and bath)", "remodeling", "renovation", "Kitchen and bath remodelers", "kitchen remodel", "bathroom remodel", "roofer", "Roofing contractors", "roofing", "hvac", "HVAC contractors", "heating", "air conditioning", "plumber", "Plumbing contractors", "plumbing", "electrician", "Electrical contractors", "electrical", "painter", "Painting contractors", "painting", "decorator", "flooring", "Flooring contractors and stores", "floor installer", "flooring installer", "Flooring retailers", "flooring store", "carpet store", "concrete", "Concrete and paving contractors", "Asphalt and paving contractors", "asphalt", "paving", "driveway paving", "masonry", "Masonry contractors", "mason", "bricklayer", "stonemason", "carpenter", "Carpentry contractors", "joiner", "carpentry", "drywall", "Drywall contractors", "plasterer", "tile", "Tile contractors", "tiler", "tiling", "siding", "Siding and gutter contractors", "Gutter contractors", "gutters", "gutter installer", "windows", "Window, door and glass contractors", "window installer", "Door contractors", "doors", "door installer", "Garage door contractors", "garage door", "Glass and glazing contractors", "glazier", "glass repair", "insulation", "Insulation contractors", "fencing", "Fencing contractors", "fence", "fence builder", "deck builder", "Deck builders", "decks", "solar", "Solar installation companies", "solar installer", "solar panels", "pool", "Pool builders and service", "pool contractor", "pool service", "pool cleaning", "excavation", "Excavation and demolition contractors", "earthworks", "Demolition contractors", "demolition", "welding", "Welding and metal fabrication", "welder", "Metal fabrication", "metal fabricator", "steel fabrication", "ironworks", "cabinet maker", "Cabinet and custom furniture makers", "cabinets", "cabinetry", "Custom furniture makers", "woodworker", "custom furniture", "countertops", "Countertop fabricators", "granite", "scaffolding", "Scaffolding contractors", "foundation repair", "Foundation repair and waterproofing", "waterproofing", "septic", "Septic services", "septic tank", "well drilling", "well driller", "chimney", "Chimney services", "chimney sweep", "home inspection", "Home and building inspection", "home inspector", "building inspector", "property inspection", "surveyor", "Land surveyors", "land surveying", "engineering", "Engineering firms", "engineer", "structural engineer", "architect", "Architects", "interior designer", "Interior designers", "interior design", "interior decorator"]
+
+home_services:
+  label: "Home services & repair"
+  rank: 2
+  group: construction
+  overture: ["home_service", "key_and_locksmith", "security_systems", "home_security", "home_automation", "appliance_repair_service", "handyman", "pest_control_service", "furniture_assembly", "furniture_repair", "furniture_reupholstery", "shades_and_blinds", "water_purification_service", "home_window_tinting", "lawn_mower_repair_service", "bathtub_and_sink_repair", "pool_cleaning", "pool_and_hot_tub_service", "chimney_service", "air_duct_cleaning_service", "lighting_fixtures_and_equipment", "childproofing", "elevator_service", "house_sitting", "feng_shui", "firewood"]
+  aliases: ["security install", "Security and alarm installers", "alarm installer", "security systems", "handyman", "Handyman services", "locksmith", "Locksmiths", "appliance repair", "upholstery", "Upholsterers", "upholsterer", "blinds", "Blinds and shutters", "shutters", "pest control", "exterminator"]
+
+# ----------------------------------------------------------------------
+# Home & Property Services
+# ----------------------------------------------------------------------
+
+landscaping:
+  label: "Landscaping & tree services"
+  rank: 3
+  group: home_services
+  overture: ["landscaping", "irrigation_service", "artificial_turf", "tree_service", "gardener", "lawn_service"]
+  aliases: ["landscaper", "Landscaping, lawn care and irrigation", "landscaping", "landscape", "gardener", "Lawn care companies", "lawn care", "mowing", "Irrigation companies", "sprinkler", "irrigation", "tree service", "Tree service companies", "arborist", "tree removal", "snow removal", "snow plowing"]
+
+cleaning:
+  label: "Cleaning & restoration"
+  rank: 4
+  group: home_services
+  overture: ["home_cleaning", "cleaning_service", "carpet_cleaning", "pressure_washing", "window_washing", "damage_restoration", "junk_removal_and_hauling", "dumpster_rental", "shredding_service"]
+  aliases: ["cleaning", "Cleaning and janitorial companies", "cleaner", "cleaning company", "maid service", "house cleaning", "Commercial and janitorial cleaning", "janitorial", "commercial cleaning", "carpet cleaning", "Specialty cleaning (carpet, window, pressure washing)", "carpet cleaner", "Window cleaning", "window cleaner", "Pressure washing", "power washing", "restoration", "Water, fire and mold restoration", "water damage", "fire damage", "damage restoration", "Mold remediation", "mold removal", "mould removal", "junk removal", "hauling"]
+
+moving_storage:
+  label: "Moving, storage & rentals"
+  rank: 5
+  group: home_services
+  overture: ["mover", "packing_service", "storage_facility", "machine_and_tool_rental", "furniture_rental_service", "rental_service"]
+  aliases: ["moving", "Moving companies", "movers", "moving company", "removals", "self storage", "Self-storage facilities", "storage units", "storage", "equipment rental", "Equipment and party rentals", "tool hire", "equipment hire", "Party rentals", "party hire", "bounce house"]
+
+# ----------------------------------------------------------------------
+# Professional Services
+# ----------------------------------------------------------------------
+
+accounting:
+  label: "Accounting, bookkeeping & tax"
+  rank: 6
+  group: professional
+  overture: ["accountant", "bookkeeper", "tax_service", "payroll_service", "billing_service"]
+  aliases: ["accountant", "Accounting, bookkeeping, tax and payroll firms", "cpa", "accounting firm", "cpa firm", "Bookkeeping firms", "bookkeeping", "Tax preparation firms", "tax preparation", "tax advisor", "tax service", "Payroll companies", "payroll services"]
+
+financial:
+  label: "Financial, insurance & mortgage"
+  rank: 7
+  group: professional
+  overture: ["financial_service", "insurance_agency", "mortgage_broker", "financial_advising", "investing", "investment_management_company", "trusts", "broker", "installment_loans", "business_financing", "credit_and_debt_counseling", "debt_relief_service", "public_adjuster", "health_insurance_office", "collection_agency", "customs_broker"]
+  aliases: ["financial advisor", "Financial advisory firms", "financial adviser", "financial planner", "wealth manager", "insurance agent", "Insurance agencies and brokers", "insurance", "insurance broker", "mortgage broker", "Mortgage brokers", "mortgage"]
+
+legal:
+  label: "Law firms & notaries"
+  rank: 8
+  group: professional
+  overture: ["legal_service", "attorney_or_law_firm", "notary_public", "mediator", "patent_law", "court_reporter", "process_server", "bail_bonds_service"]
+  aliases: ["lawyer", "Law firms (all practice areas)", "attorney", "law firm", "solicitor", "legal", "Immigration law firms", "immigration lawyer", "Family law firms", "divorce lawyer", "family lawyer", "Personal injury law firms", "injury lawyer", "accident lawyer", "Business law firms", "corporate lawyer", "business lawyer", "Real estate law firms", "real estate lawyer", "Estate planning firms", "estate planner", "probate lawyer", "notary", "Notary services", "notary public"]
+
+consulting:
+  label: "Consulting, coaching & training"
+  rank: 9
+  group: professional
+  overture: ["business_consulting", "career_counseling", "life_coach", "food_and_beverage_consultant", "food_consultant", "image_consultant", "health_coaching"]
+  aliases: ["consulting", "Business, management and HR consulting", "consultant", "business consultant", "management consulting", "HR consulting", "human resources", "coaching", "Business and life coaching", "coach", "life coach", "business coach", "executive coach", "career coach", "training", "Corporate training companies", "corporate training", "training company", "research", "Research companies", "market research", "research company"]
+
+it_tech:
+  label: "IT, software & web development"
+  rank: 10
+  group: professional
+  overture: ["technical_service", "software_development", "it_service_and_computer_repair", "information_technology_company", "computer_hardware_company", "web_designer", "e_commerce_service", "b2b_science_and_technology_service", "internet_service_provider", "telecommunications_company"]
+  aliases: ["it company", "IT services and cybersecurity", "it", "it services", "msp", "managed services", "it consulting", "tech support", "Cybersecurity companies", "cyber security", "software company", "Software and app development", "software development", "saas", "Mobile app development", "app developer", "web design", "Web development agencies", "web designer", "web agency", "web developer"]
+
+marketing:
+  label: "Marketing, PR & design agencies"
+  rank: 11
+  group: professional
+  overture: ["marketing_agency", "advertising_agency", "internet_marketing_service", "public_relations", "social_media_agency", "graphic_designer", "product_design", "copywriting_service", "editorial_service", "writing_service", "merchandising_service", "b2b_media_service", "design_service"]
+  aliases: ["marketing agency", "Marketing, advertising and branding agencies", "digital agency", "digital marketing", "SEO agencies", "seo", "Social media agencies", "social media marketing", "Advertising agencies", "advertising", "ad agency", "Branding agencies", "branding", "pr agency", "PR agencies", "public relations", "pr firm", "graphic design", "Graphic design studios", "graphic designer"]
+
+staffing:
+  label: "Staffing & recruitment"
+  rank: 12
+  group: professional
+  overture: ["employment_agency"]
+  aliases: ["staffing", "Recruitment, staffing and executive search", "recruitment", "recruiter", "staffing agency", "employment agency", "Executive search firms", "headhunter"]
+
+business_services:
+  label: "Business services"
+  rank: 13
+  group: professional
+  overture: ["professional_service", "b2b_service", "b2b_office_and_professional_service", "coworking_space", "shared_office_space", "translation_service", "private_investigation", "medical_billing", "fingerprinting_service", "security_service", "personal_assistant", "corporate_or_business_office"]
+  aliases: ["translation", "Translation services", "translator", "interpreter", "private investigator", "Private investigators", "private detective", "investigator", "security guards", "Security guard companies", "security company", "guards", "coworking", "Coworking spaces", "coworking space", "shared office", "medical billing", "Medical billing companies"]
+
+travel:
+  label: "Travel agencies"
+  rank: 14
+  group: professional
+  overture: ["travel_service", "tour_operator", "travel_agent", "passport_and_visa_service", "travel_company"]
+  aliases: ["travel agency", "Travel agencies and tour operators", "travel agent", "Tour operators", "tours", "tour company"]
+
+# ----------------------------------------------------------------------
+# Healthcare & Wellness
+# ----------------------------------------------------------------------
+
+medical:
+  label: "Medical clinics & labs"
+  rank: 15
+  group: healthcare
+  overture: ["health_care", "outpatient_care_facility", "medical_service", "primary_care_or_general_clinic", "specialized_health_care", "specialized_medical_facility", "surgery", "pediatric_clinic", "reproductive_perinatal_and_womens_care", "diagnostics_imaging_or_lab_service", "emergency_or_urgent_care_facility", "dialysis_clinic", "fertility_clinic", "cancer_treatment_center", "medical_service_organization", "laboratory"]
+  aliases: ["medical clinic", "Medical clinics and urgent care", "clinic", "doctor", "doctors", "gp", "family medicine", "family doctor", "medical practice", "Urgent care centers", "walk in clinic", "dermatology", "Dermatology clinics", "dermatologist", "medical lab", "Medical labs and diagnostic imaging", "medical laboratory", "lab", "Diagnostic imaging centers", "imaging center", "radiology"]
+
+dental:
+  label: "Dental practices"
+  rank: 16
+  group: healthcare
+  overture: ["dental_clinic", "teeth_whitening"]
+  aliases: ["dentist", "Dental and orthodontic practices", "dental", "dental clinic", "dental office", "dental practice", "Orthodontic practices", "orthodontics", "dental lab", "Dental laboratories", "dental laboratory"]
+
+health_therapy:
+  label: "Therapy, chiropractic & counseling"
+  rank: 17
+  group: healthcare
+  overture: ["physical_medicine_and_rehabilitation", "complementary_and_alternative_medicine", "chiropractic", "acupuncture", "naturopathic_medicine", "behavioral_or_mental_health_clinic", "massage_therapy", "abuse_and_addiction_treatment_center", "eating_disorder_treatment_center"]
+  aliases: ["chiropractor", "Chiropractic clinics", "chiropractic", "physiotherapist", "Physical therapy and physiotherapy clinics", "physio", "physical therapist", "physiotherapy", "physical therapy", "occupational therapy", "occupational therapist", "speech therapy", "speech therapist", "speech pathologist", "therapist", "Counseling and mental health practices", "counsellor", "counselor", "psychologist", "mental health", "psychology", "podiatrist", "Podiatry practices", "podiatry", "chiropodist", "foot doctor", "massage", "Massage therapy", "massage therapist", "acupuncture", "Acupuncture clinics", "acupuncturist"]
+
+eye_hearing:
+  label: "Eye care & hearing"
+  rank: 18
+  group: healthcare
+  overture: ["vision_or_eye_care_clinic", "eyewear_store", "hearing_aid_provider", "audiologist"]
+  aliases: ["optometrist", "Eye care: optometrists, ophthalmologists and opticians", "eye doctor", "optometry", "Ophthalmology practices", "ophthalmologist", "Opticians", "optician", "glasses", "eyewear", "audiology", "Audiology and hearing clinics", "audiologist", "hearing aid"]
+
+senior_care:
+  label: "Home care & senior living"
+  rank: 19
+  group: healthcare
+  overture: ["home_health_care", "hospice", "senior_living_facility", "senior_citizen_service", "elder_care_planning"]
+  aliases: ["home care", "Home care and elder care agencies", "home health", "caregiver", "Adult day and elder care services", "elder care", "senior care", "adult day care", "assisted living", "Assisted living and nursing homes", "nursing home", "care home", "retirement home"]
+
+pharmacy:
+  label: "Pharmacies"
+  rank: 20
+  group: healthcare
+  overture: ["pharmacy_and_drug_store", "medical_supply_store", "vitamin_and_supplement_store"]
+  aliases: ["pharmacy", "Independent pharmacies", "chemist", "drugstore"]
+
+pets:
+  label: "Veterinary & pet services"
+  rank: 21
+  group: healthcare
+  overture: ["animal_or_pet_service", "veterinary_care", "pet_care_service", "animal_and_pet_store", "pet_breeder", "equine_service"]
+  aliases: ["veterinarian", "Veterinary clinics and animal hospitals", "vet", "veterinary", "animal hospital", "veterinary hospital", "pet boarding", "Pet boarding and dog daycare", "kennel", "dog daycare", "cattery", "dog training", "Dog trainers", "dog trainer", "pet groomer", "Pet grooming", "dog groomer", "pet store", "Pet stores", "pet shop", "pet supplies"]
+
+fitness:
+  label: "Fitness & wellness"
+  rank: 22
+  group: healthcare
+  overture: ["sport_or_fitness_facility", "wellness_service", "gym", "fitness_studio", "fitness_trainer", "boxing_gym", "boxing_class", "cycling_class", "cardio_class", "self_defense_class", "gymnastics_center", "meditation_center", "weight_loss_center", "nutrition_service", "health_and_wellness_club"]
+  aliases: ["gym", "Gyms, CrossFit and personal training", "fitness", "fitness centre", "fitness center", "Personal training studios", "personal trainer", "CrossFit gyms", "crossfit box", "yoga studio", "Yoga and pilates studios", "yoga", "Pilates studios", "pilates", "martial arts", "Martial arts studios", "karate", "dojo", "bjj", "wellness center", "Wellness centers", "wellness", "nutrition", "Nutrition and dietitian practices", "dietitian", "nutritionist"]
+
+# ----------------------------------------------------------------------
+# Education & Personal Care
+# ----------------------------------------------------------------------
+
+beauty:
+  label: "Beauty, hair & spa"
+  rank: 23
+  group: personal
+  overture: ["personal_or_beauty_service", "beauty_salon", "hair_salon", "barber", "nail_salon", "skin_care_and_makeup", "hair_removal", "eyelash_service", "tanning_salon", "eyebrow_service", "body_modification", "spa", "hair_replacement", "acne_treatment", "medical_skin_care"]
+  aliases: ["beauty salon", "Beauty salons (lash, brow, makeup, tanning)", "beauty", "beautician", "Lash and brow studios", "lash extensions", "brow bar", "Makeup artists", "makeup artist", "Tanning salons", "tanning salon", "hair salon", "Hair salons and barbershops", "hairdresser", "salon", "Barbershops", "barber", "nail salon", "Nail salons", "nails", "nail bar", "spa", "Day spas", "med spa", "Med spas and skincare clinics", "medspa", "medical spa", "Skincare clinics", "facials", "esthetician", "tattoo", "Tattoo studios", "tattoo parlour", "tattoo parlor", "piercing"]
+
+# ----------------------------------------------------------------------
+# Retail
+# ----------------------------------------------------------------------
+
+clothing:
+  label: "Clothing, shoes & jewelry"
+  rank: 24
+  group: retail
+  overture: ["fashion_and_apparel_store", "clothing_store", "jewelry_store", "shoe_store", "fashion_boutique", "fashion_accessories_store", "luggage_store", "leather_goods_store", "baby_gear_and_nursery_store"]
+  aliases: ["clothing store", "Clothing stores and boutiques", "clothes", "clothing", "apparel", "Boutiques", "boutique", "shoe store", "Shoe stores", "shoes", "shoe shop", "jewellery store", "Jewelry stores", "jewelry", "jewellery", "jeweler", "jeweller"]
+
+home_stores:
+  label: "Furniture & home stores"
+  rank: 25
+  group: retail
+  overture: ["furniture_store", "home_goods_store", "home_decor_store", "appliance_store", "mattress_store", "lighting_store", "kitchen_and_bath_store", "linen_store", "candle_store", "rug_store", "carpet_store", "flooring_store", "window_treatment_store", "outdoor_furniture_store", "furniture_accessory_store"]
+  aliases: ["furniture store", "Furniture and mattress stores", "furniture", "Mattress stores", "mattress", "beds", "home decor", "Home decor and lighting stores", "decor", "Lighting stores", "lighting", "lamps", "kitchen supply", "Kitchen supply stores", "kitchenware", "housewares", "appliance store", "Appliance stores", "appliances"]
+
+hardware:
+  label: "Hardware & building supplies"
+  rank: 26
+  group: retail
+  overture: ["hardware_home_and_garden_store", "hardware_store", "building_supply_store", "home_improvement_store", "paint_store", "electrical_supply_store", "do_it_yourself_store", "tile_store", "wallpaper_store", "hot_tub_and_pool_store"]
+  aliases: ["hardware store", "Hardware and paint stores", "hardware", "diy store", "Paint stores", "paint store", "building supplies", "Building material suppliers", "lumber yard"]
+
+electronics:
+  label: "Electronics & phone stores"
+  rank: 27
+  group: retail
+  overture: ["electronics_store", "mobile_phone_store", "computer_store", "camera_and_photography_store", "mobile_phone_accessory_store", "electronics_repair_shop", "audio_visual_equipment_store"]
+  aliases: ["electronics store", "Electronics, computer and phone stores (and repair)", "electronics", "Computer stores and repair", "computers", "computer shop", "Mobile phone stores and repair", "phone shop", "cell phone store", "phone repair", "electronics repair"]
+
+hobby_stores:
+  label: "Sports, hobby & book stores"
+  rank: 28
+  group: retail
+  overture: ["sporting_goods_store", "books_music_and_video_store", "arts_crafts_and_hobby_store", "musical_instrument_and_pro_audio_store", "toys_and_games_store", "bike_store", "bike_repair_maintenance", "outdoor_store", "surf_store", "bookstore", "video_game_store"]
+  aliases: ["sporting goods", "Sporting goods and outdoor stores", "sports shop", "Outdoor equipment stores", "camping store", "outdoor shop", "bike shop", "Bicycle shops", "bicycle shop", "cycle shop", "toy store", "Toy stores", "toys", "toy shop", "game store", "bookstore", "Bookstores", "book shop", "bookshop", "books", "craft store", "Art supply and craft stores", "art supplies", "craft supplies", "hobby shop", "music store", "Musical instrument stores", "music shop", "guitar shop"]
+
+gift_shops:
+  label: "Gift, flower & specialty shops"
+  rank: 29
+  group: retail
+  overture: ["specialty_store", "flowers_and_gifts_store", "gift_shop", "florist", "souvenir_store", "party_supply_store", "cards_and_stationery_store", "trophy_store", "office_supply_store", "personal_care_and_beauty_store", "beauty_supply_store", "second_hand_store", "antique_store", "second_hand_clothing_store", "auction_house", "floral_designer"]
+  aliases: ["florist", "Florists", "flower shop", "gift shop", "Gift shops", "gifts", "souvenir shop", "antiques", "Antique, vintage and thrift stores", "antique shop", "vintage store", "Thrift and consignment stores", "thrift", "consignment", "charity shop", "second hand", "beauty supply", "Beauty supply and cosmetics stores", "cosmetics", "perfume", "art gallery", "Art galleries and studios", "gallery", "art dealer", "art studio"]
+
+grocery:
+  label: "Grocery, specialty food & liquor"
+  rank: 30
+  group: retail
+  overture: ["food_and_beverage_store", "grocery_store", "liquor_store", "specialty_foods_store", "butcher_shop", "beer_wine_spirits_store", "fishmonger", "seafood_market", "herb_and_spice_store", "cheese_shop", "health_food_store", "imported_food_store", "market"]
+  aliases: ["grocery", "Grocery stores", "convenience store", "supermarket", "specialty food", "Specialty, organic and health food stores", "deli", "delicatessen", "gourmet", "Organic and health food stores", "health food", "organic store", "vitamins", "butcher", "Butcher shops", "liquor store", "Liquor stores", "liquor", "off licence", "bottle shop", "wine shop"]
+
+# ----------------------------------------------------------------------
+# Food & Hospitality
+# ----------------------------------------------------------------------
+
+restaurants:
+  label: "Restaurants & cafés"
+  rank: 31
+  group: food
+  overture: ["restaurant", "casual_eatery", "non_alcoholic_beverage_venue", "fast_food_restaurant", "cafe", "coffee_shop", "food_truck_stand", "sandwich_shop", "diner", "delicatessen", "smoothie_juice_bar", "bubble_tea_shop", "tea_room", "food_court", "bistro", "gastropub"]
+  aliases: ["restaurant", "Restaurants (incl. fast food)", "fine dining", "takeout", "ethnic restaurant", "Fast food and fast casual restaurants", "fast food", "quick service", "fast casual", "cafe", "Cafés and coffee shops", "coffee shop", "coffee", "food truck", "Food trucks", "juice bar", "Juice bars", "smoothie bar"]
+
+bakeries:
+  label: "Bakeries & dessert shops"
+  rank: 32
+  group: food
+  overture: ["bakery", "dessert_shop", "candy_store", "patisserie_cake_shop", "bagel_shop", "popcorn_shop"]
+  aliases: ["bakery", "Bakeries", "ice cream", "Ice cream, chocolate and candy shops", "gelato", "frozen yogurt", "Chocolate and candy shops", "chocolate shop", "candy store", "sweet shop"]
+
+catering:
+  label: "Catering & food production"
+  rank: 33
+  group: food
+  overture: ["caterer", "personal_chef", "food_delivery_service", "food_service"]
+  aliases: ["caterer", "Catering and meal prep companies", "catering", "Meal prep companies", "meal prep", "food distributor", "Food distributors", "food wholesaler", "food manufacturer", "Specialty food manufacturers", "co-packer", "food production"]
+
+bars:
+  label: "Bars, breweries & wineries"
+  rank: 34
+  group: food
+  overture: ["alcoholic_beverage_venue", "bar", "lounge", "brewery", "winery", "distillery", "beer_garden", "cidery", "nightlife_venue"]
+  aliases: ["bar", "Bars, pubs and nightclubs", "pub", "Nightclubs", "nightclub", "night club", "brewery", "Breweries, wineries and distilleries", "craft brewery", "microbrewery", "Wineries", "vineyard", "Distilleries"]
+
+lodging:
+  label: "Hotels & lodging"
+  rank: 35
+  group: food
+  overture: ["lodging", "hotel", "motel", "bed_and_breakfast", "inn", "resort", "private_lodging", "campground", "rv_park", "cabin", "cottage", "lodge", "service_apartment"]
+  aliases: ["hotel", "Hotels and motels", "boutique hotel", "Motels", "motel", "guest house", "Bed and breakfasts", "b&b", "bed and breakfast", "guesthouse", "inn", "vacation rental", "Vacation rentals", "airbnb", "holiday let", "campground", "Campgrounds and RV parks", "campsite", "rv park", "caravan park", "hospitality management", "Hospitality and restaurant management", "hotel management", "restaurant management", "rental management", "Short-term rental management", "airbnb management"]
+
+events:
+  label: "Event venues & planning"
+  rank: 36
+  group: food
+  overture: ["event_or_party_service", "party_and_event_planning", "wedding_planning", "event_venue", "party_equipment_rental", "event_technology_service", "audiovisual_equipment_rental", "dj_service", "photo_booth_rental", "wedding_chapel", "balloon_service", "kids_recreation_and_party", "bartender", "valet_service", "officiating_service"]
+  aliases: ["event venue", "Event, wedding and banquet venues", "venue", "conference centre", "Wedding venues", "wedding venue", "Banquet halls", "banquet", "event planner", "Event and wedding planners", "event planning", "Wedding planning companies", "wedding planner", "event production", "Event production and DJ services", "av company", "DJ companies", "dj service", "disc jockey"]
+
+# ----------------------------------------------------------------------
+# Real Estate & Property
+# ----------------------------------------------------------------------
+
+real_estate:
+  label: "Real estate agencies & investors"
+  rank: 37
+  group: property
+  overture: ["real_estate_service", "real_estate_agent", "commercial_real_estate", "real_estate_investment", "appraisal_service", "escrow_service", "home_staging", "real_estate_photography", "estate_liquidation", "vacation_rental_agent"]
+  aliases: ["real estate", "Real estate agencies and brokerages (incl. commercial)", "realtor", "estate agent", "real estate broker", "Commercial real estate firms", "cre", "re investment", "Real estate investors and developers", "real estate investor", "property investment", "Real estate developers", "developer", "property developer", "home staging", "Home staging companies", "home stager", "title company", "Title and escrow companies", "title insurance", "title agency", "Escrow companies", "escrow", "appraiser", "Property appraisers", "property appraiser", "appraisal"]
+
+property_management:
+  label: "Property management"
+  rank: 38
+  group: property
+  overture: ["property_management", "homeowner_association", "housing_or_property_service", "apartment", "condominium", "mobile_home_park"]
+  aliases: ["Property, HOA and leasing management", "property manager", "Property leasing companies", "apartment leasing", "HOA management companies", "hoa", "community management"]
+
+# ----------------------------------------------------------------------
+# Automotive & Transportation
+# ----------------------------------------------------------------------
+
+auto_repair:
+  label: "Auto repair & car care"
+  rank: 39
+  group: automotive
+  overture: ["vehicle_service", "automotive_service", "automotive_repair", "auto_body_shop", "auto_detailing", "auto_glass_service", "towing_service", "car_wash", "tire_shop", "auto_customization", "oil_change_station", "auto_restoration_service", "truck_repair", "auto_upholstery", "car_inspection", "motorcycle_service", "boat_service", "roadside_assistance", "vehicle_wrap"]
+  aliases: ["car repair", "Auto repair shops (incl. oil change and fleet service)", "auto repair", "mechanic", "garage", "Oil change shops", "oil change", "lube shop", "Fleet maintenance companies", "fleet services", "Automotive restoration", "classic car restoration", "auto body", "Auto body and collision repair", "body shop", "collision repair", "tyre shop", "Tire shops", "tyres", "tire shop", "tires", "car wash", "Car washes and auto detailing", "Auto detailing", "car detailing", "detailer", "truck repair", "Truck dealers and repair", "truck dealer", "towing", "Towing companies", "tow truck", "vehicle recovery"]
+
+vehicle_sales:
+  label: "Vehicle dealers & rentals"
+  rank: 40
+  group: automotive
+  overture: ["vehicle_dealer", "auto_dealer", "motorcycle_dealer", "boat_dealer", "truck_dealer", "recreational_vehicle_dealer", "vehicle_parts_store", "vehicle_rental_service", "trailer_dealer"]
+  aliases: ["car dealer", "Independent car dealers", "car dealership", "used cars", "motorcycle", "Motorcycle dealers and repair", "motorcycle dealer", "motorcycle repair", "motorbike", "auto parts", "Auto parts stores", "car parts", "car rental", "car hire", "rv dealer", "RV dealers", "caravan dealer", "boat dealer", "Boat dealers", "boat sales", "boats", "marina", "Marinas", "boat yard"]
+
+transport:
+  label: "Transport, trucking & logistics"
+  rank: 41
+  group: automotive
+  overture: ["taxi_or_ride_share_service", "courier_and_delivery_service", "shipping_center", "vehicle_shipping", "b2b_transportation_and_storage_service", "shipping_or_delivery_service", "moving_and_trucking"]
+  aliases: ["trucking", "Trucking and transportation companies", "haulage", "truck company", "Transportation companies", "transport company", "logistics", "Freight, logistics and warehousing", "freight broker", "logistics company", "freight forwarder", "Warehousing and fulfillment", "warehouse", "fulfillment center", "courier", "Courier and delivery companies", "delivery", "delivery service", "taxi", "Taxi and limousine services", "cab company", "Limousine services", "limo service", "chauffeur"]
+
+# ----------------------------------------------------------------------
+# Creative & Media
+# ----------------------------------------------------------------------
+
+media:
+  label: "Photography, video & media"
+  rank: 42
+  group: creative
+  overture: ["media_service", "photography_service", "video_film_production", "videographer", "recording_and_rehearsal_studio", "music_production_service", "talent_agency", "theatrical_production", "record_label", "digitizing_service", "musician", "commissioned_artist"]
+  aliases: ["photographer", "Photography studios (incl. wedding)", "photography", "photo studio", "Wedding photographers", "wedding photography", "video production", "Videography and film production", "videographer", "film production", "animation", "Animation studios", "animation studio", "recording studio", "Recording and music production studios", "music studio", "music production", "talent agency", "Talent agencies", "talent agent", "model agency"]
+
+printing:
+  label: "Printing & signs"
+  rank: 43
+  group: creative
+  overture: ["printing_service", "sign_making", "print_media", "customized_merchandise_store", "engraving", "bookbinding"]
+  aliases: ["print shop", "Printing, screen printing and custom merchandise", "printer", "printing", "copy shop", "Custom merchandise and screen printing", "screen printing", "promotional products", "embroidery", "sign maker", "Sign companies", "signs", "signage"]
+
+# ----------------------------------------------------------------------
+# Education & Personal Care
+# ----------------------------------------------------------------------
+
+education:
+  label: "Schools, tutoring & lessons"
+  rank: 44
+  group: personal
+  overture: ["educational_service", "tutoring_service", "test_preparation", "college_counseling", "specialty_school", "music_school", "language_school", "art_school", "driving_school", "cooking_school", "vocational_and_technical_school", "cosmetology_school", "computer_coaching", "private_school", "montessori_school", "dance_studio", "surfing_school", "diving_instruction", "golf_instructor", "adult_education_center", "flight_school", "drama_school", "sports_school"]
+  aliases: ["tutoring", "Tutoring and test prep centers", "tutor", "learning center", "private tutor", "Test preparation centers", "test preparation", "language school", "Language schools", "music school", "Music schools", "music lessons", "dance studio", "Dance studios", "dance school", "swim school", "Swim schools", "swim lessons", "private school", "Private schools", "independent school", "educational consulting", "college counselor", "vocational", "Vocational training centers", "trade school", "cooking school", "Cooking schools", "culinary school", "cooking classes", "driving school", "Driving schools", "driving instructor"]
+
+childcare:
+  label: "Childcare & preschools"
+  rank: 45
+  group: personal
+  overture: ["child_care_and_day_care", "preschool", "after_school_program", "nanny_service", "kindergarten"]
+  aliases: ["childcare", "Childcare, preschool and after-school programs", "daycare", "day care", "Preschools", "preschool", "kindergarten", "nursery school", "pre-k", "After-school programs", "afterschool", "after school care"]
+
+personal_services:
+  label: "Personal services"
+  rank: 46
+  group: personal
+  overture: ["laundry_service", "dry_cleaning", "laundromat", "sewing_and_alterations", "shoe_repair", "shoe_shining_service", "funeral_service", "family_service", "clothing_rental"]
+  aliases: ["dry cleaner", "Dry cleaners and laundromats", "dry cleaning", "Laundromats", "laundry", "launderette", "laundrette", "tailor", "Tailors and alterations", "alterations", "seamstress", "shoe repair", "cobbler", "funeral home", "Funeral homes", "funeral director", "funeral parlor", "mortuary"]
+
+# ----------------------------------------------------------------------
+# Industrial, Wholesale & Community
+# ----------------------------------------------------------------------
+
+manufacturing:
+  label: "Manufacturing & machine shops"
+  rank: 47
+  group: industrial
+  overture: ["manufacturer", "industrial_facility_or_service", "commercial_industrial", "b2b_industrial_and_machine_service", "machine_shop", "powder_coating_service", "sandblasting_service", "packaging_contractors_and_service", "plastics_company", "industrial_company"]
+  aliases: ["manufacturer", "Manufacturing companies", "manufacturing", "factory", "machine shop", "Machine and CNC shops", "cnc machining", "machinist", "packaging", "Packaging companies", "packaging company"]
+
+wholesale:
+  label: "Wholesale, import & export"
+  rank: 48
+  group: industrial
+  overture: ["wholesaler", "supplier_or_distributor"]
+  aliases: ["wholesale", "Wholesale and distribution companies", "wholesaler", "Distribution companies", "distributor", "import export", "Import and export businesses", "importer", "exporter", "trading company"]
+
+agriculture:
+  label: "Farms, nurseries & agriculture"
+  rank: 49
+  group: industrial
+  overture: ["agricultural_service", "farm", "b2b_agriculture_service", "farming_equipment_and_supply_store", "honey_farm_shop", "nursery_and_gardening_store"]
+  aliases: ["farm", "Farms", "farm shop", "farmer", "agriculture", "Agriculture businesses and suppliers", "farm supply", "feed store", "plant nursery", "Plant nurseries and garden centers", "nursery", "Garden centers", "garden centre", "garden center"]
+
+nonprofit:
+  label: "Nonprofits & churches"
+  rank: 50
+  group: industrial
+  overture: ["civic_organization", "charity_organization", "non_governmental_association", "social_or_community_service", "religious_organization", "place_of_worship", "youth_organization", "community_center", "food_bank", "volunteer_association"]
+  aliases: ["nonprofit", "Nonprofits, associations and community organizations", "charity", "ngo", "non-profit", "Community organizations", "community center", "community centre", "Membership organizations and clubs", "club", "association", "lodge", "church", "Churches and religious organizations", "religious organization", "temple", "mosque", "synagogue"]

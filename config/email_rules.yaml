@@ -1,0 +1,199 @@
+# Email classification rules.
+
+# Email type labels (see project plan, Stage 5):
+#   generic  - shared front-door inboxes (info@, contact@, hello@ ...)
+#   role     - department inboxes (sales@, support@, billing@ ...)
+#   personal - anything else (anna@, j.smith@ ...)
+generic_local_parts:
+  - info
+  - contact
+  - contactus
+  - hello
+  - hi
+  - office
+  - admin
+  - administration
+  - enquiries
+  - enquiry
+  - inquiries
+  - inquiry
+  - reception
+  - frontdesk
+  - front.desk
+  - team
+  - mail
+  - email
+  - appointments
+  - appointment
+  - booking
+  - bookings
+  - reservations
+  - general
+  - studio
+  - clinic
+  - practice
+  - dental
+  - law
+  - welcome
+  - webmaster
+  - social
+  - socials
+  - marketing.team
+  - orders.online
+  - patient
+  - patients
+  - newpatient
+  - newpatients
+  - care
+  - frontoffice
+  - schedule
+  - scheduling
+  - request
+  - requests
+  - questions
+  - ask
+  - smile
+  - smiles
+  - dentist
+  - doctor
+  - hola
+  - bonjour
+  - kontakt
+  - contacto
+
+role_local_parts:
+  - sales
+  - support
+  - help
+  - billing
+  - accounts
+  - accounting
+  - careers
+  - jobs
+  - hr
+  - marketing
+  - service
+  - services
+  - customerservice
+  - privacy
+  - legal
+  - media
+  - press
+  - orders
+  - feedback
+  - manager
+  - officemanager
+  - office.manager
+  - finance
+  - operations
+  - purchasing
+  - events
+  - recruiting
+  - recruitment
+  # inboxes for running social accounts (facebook@business.com), not people
+  - facebook
+  - fb
+  - instagram
+  - insta
+  - ig
+  - twitter
+  - tiktok
+  - youtube
+  - linkedin
+  - pinterest
+  - social
+  - socialmedia
+  - social.media
+
+# Consumer mailbox providers. Small businesses often use these, so they are
+# flagged, not excluded.
+freemail_domains:
+  - gmail.com
+  - googlemail.com
+  - yahoo.com
+  - yahoo.co.uk
+  - hotmail.com
+  - hotmail.co.uk
+  - outlook.com
+  - live.com
+  - msn.com
+  - aol.com
+  - icloud.com
+  - me.com
+  - mac.com
+  - protonmail.com
+  - proton.me
+  - gmx.com
+  - gmx.net
+  - mail.com
+  - zoho.com
+  - yandex.com
+  - comcast.net
+  - att.net
+  - verizon.net
+  - sbcglobal.net
+  - bellsouth.net
+
+# Disposable/throwaway providers. Emails here are marked risky.
+disposable_domains:
+  - mailinator.com
+  - guerrillamail.com
+  - 10minutemail.com
+  - tempmail.com
+  - temp-mail.org
+  - trashmail.com
+  - yopmail.com
+  - sharklasers.com
+  - getnada.com
+  - dispostable.com
+  - maildrop.cc
+  - throwawaymail.com
+
+# Addresses/domains that are never real business contacts (placeholders,
+# platform/tracking addresses, template leftovers).
+junk_domains:
+  - example.com
+  - example.org
+  - example.net
+  - domain.com
+  - yourdomain.com
+  - email.com
+  - sentry.io
+  - sentry-next.wixpress.com
+  - sentry.wixpress.com
+  - wixpress.com
+  - godaddy.com
+  - squarespace.com
+  - wordpress.com
+  - schema.org
+  - mysite.com
+  - yoursite.com
+  - yourwebsite.com
+  - website.com
+  - company.com
+  - yourcompany.com
+  - test.com
+  - wix.com
+  - latofonts.com
+  - png.com
+junk_local_parts:
+  - you
+  - your
+  - yourname
+  - name
+  - user
+  - username
+  - firstname
+  - first.last
+  - johndoe
+  - john.doe
+  - janedoe
+  - test
+  - noreply
+  - no-reply
+  - no_reply
+  - donotreply
+  - do-not-reply
+  - postmaster
+  - mailer-daemon
+  - abuse

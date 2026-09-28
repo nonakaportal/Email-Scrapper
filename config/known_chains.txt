@@ -1,0 +1,123 @@
+# Known chains and franchises: one normalized name or domain per line.
+# A business whose normalized name contains one of these names, or whose
+# website domain matches one of these domains, is flagged as a chain.
+# Names are compared after normalization (lowercase, no punctuation or
+# legal suffixes like LLC/Inc/Ltd).
+
+# Dental
+aspen dental
+heartland dental
+pacific dental services
+western dental
+bupa dental care
+mydentist
+smile brands
+coast dental
+gentle dental
+aspendental.com
+westerndental.com
+smile direct club
+smiledirectclub.com
+
+# Food & drink
+starbucks
+mcdonalds
+subway
+dunkin
+costa coffee
+tim hortons
+chipotle
+dominos
+pizza hut
+burger king
+kfc
+taco bell
+wendys
+panera bread
+pret a manger
+
+# Accounting, tax and advisory networks (large / multinational)
+deloitte
+pwc
+pricewaterhousecoopers
+kpmg
+ernst and young
+ernst young
+ey.com
+bdo.com
+bdo usa
+grant thornton
+rsm us
+baker tilly
+bakertilly.com
+crowe.com
+moss adams
+cliftonlarsonallen
+forvis
+mazars
+fiducial
+fiducial.com
+marcumllp.com
+cbiz
+plante moran
+eide bailly
+cherry bekaert
+wipfli
+aprio
+withum
+armaninollp.com
+citrin cooperman
+cohnreznick
+bookkeeper360
+bench accounting
+pilot.com
+paychex
+raymond james
+onemain financial
+padgett business services
+edward jones
+scottrade
+lpl financial
+adp.com
+
+# Services
+h&r block
+jackson hewitt
+liberty tax
+re/max
+remax
+keller williams
+coldwell banker
+century 21
+sothebys international realty
+edward jones
+state farm
+allstate
+farmers insurance
+great clips
+supercuts
+sport clips
+fantastic sams
+regis salons
+planet fitness
+anytime fitness
+la fitness
+orangetheory fitness
+snap fitness
+gold's gym
+banfield pet hospital
+vca animal hospital
+jiffy lube
+midas
+meineke
+firestone complete auto care
+pep boys
+valvoline instant oil change
+mr rooter
+roto-rooter
+mister sparky
+one hour heating & air conditioning
+servpro
+specsavers
+pearle vision
+lenscrafters
