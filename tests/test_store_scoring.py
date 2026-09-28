@@ -104,3 +104,22 @@ def test_discard_run_removes_only_its_own_businesses(store):
     assert [r["email"] for r in store.query("SELECT email FROM emails")] == ["b@shared.com"]
     assert store.run_business_count(runs[1]) == 1
     assert store.run_tasks(runs[0]) == []
+
+
+def test_backup_and_restore(store, tmp_path):
+    import pytest
+    from leadscout.db.store import Store
+    from leadscout.sources.base import BusinessCandidate
+    bid, _ = store.upsert_business(BusinessCandidate("Acme", "overture", "a1", website="https://acme.com"))
+    store.add_email(bid, "info@acme.com", email_type="generic", source="website",
+                    found_on_url="https://acme.com/", is_freemail=False)
+    data = store.backup_bytes()
+
+    fresh = Store(tmp_path / "fresh.db")                  # e.g. the app after a restart: empty
+    assert fresh.scalar("SELECT COUNT(*) FROM emails") == 0
+    counts = fresh.restore_bytes(data)
+    assert counts == {"businesses": 1, "emails": 1, "runs": 0}
+    assert fresh.one("SELECT email FROM emails")["email"] == "info@acme.com"
+    with pytest.raises(ValueError):
+        fresh.restore_bytes(b"not a database at all")
+    assert fresh.scalar("SELECT COUNT(*) FROM emails") == 1   # a bad file changes nothing

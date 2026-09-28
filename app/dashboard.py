@@ -818,9 +818,35 @@ def page_runs() -> None:
 
 # --------------------------------------------------------------- settings
 
+def backup_tab() -> None:
+    st.write("Everything (runs, leads, emails, people, export history, do-not-contact list) in one file. "
+             "Free hosting such as Streamlit Community Cloud wipes the app's data when it restarts or "
+             "sleeps: **download a backup after each run**, and restore it after a restart.")
+    stats = {t: store.scalar(f"SELECT COUNT(*) FROM {t}") for t in ("runs", "businesses", "emails")}
+    st.caption(f"Now: {stats['runs']} runs · {stats['businesses']:,} businesses · {stats['emails']:,} emails")
+    st.download_button("Download backup", data=lambda: store.backup_bytes(),
+                       file_name=f"leadscout-backup-{time.strftime('%Y%m%d-%H%M')}.db",
+                       mime="application/octet-stream", icon=":material/download:", type="primary")
+    st.divider()
+    up = st.file_uploader("Restore from a backup file", type=["db"],
+                          help="Replaces everything in the app with the backup's contents.")
+    if up is not None:
+        if active_job():
+            st.error("A run is in progress. Pause it before restoring.")
+        elif st.button("Replace all data with this backup", icon=":material/restore:"):
+            try:
+                counts = store.restore_bytes(up.getvalue())
+            except ValueError as exc:
+                st.error(str(exc))
+            else:
+                st.success(f"Restored {counts['runs']} runs, {counts['businesses']:,} businesses and "
+                           f"{counts['emails']:,} emails.")
+
 def page_settings() -> None:
     st.title("Settings")
-    tabs = st.tabs(["General", "Crawling", "Scoring", "Suppression list", "Industries", "Chains"])
+    tabs = st.tabs(["General", "Crawling", "Scoring", "Suppression list", "Industries", "Chains", "Backup"])
+    with tabs[6]:
+        backup_tab()
     with tabs[0]:
         with st.form("general"):
             email = st.text_input("Contact email", cfg.contact_email,

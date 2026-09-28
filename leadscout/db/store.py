@@ -118,6 +118,47 @@ class Store:
     def close(self) -> None:
         self.conn.close()
 
+    # ---------------------------------------------------------------- backup
+
+    REQUIRED_TABLES = {"runs", "businesses", "emails"}
+
+    def backup_bytes(self) -> bytes:
+        """A consistent copy of the whole database as one file (safe while the app runs)."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "leadscout.db"
+            dest = sqlite3.connect(path)
+            try:
+                self.conn.backup(dest)
+            finally:
+                dest.close()
+            return path.read_bytes()
+
+    def restore_bytes(self, data: bytes) -> dict:
+        """Replace everything with a backup made by backup_bytes. Returns its counts.
+        Raises ValueError when the file isn't a LeadScout database."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "restore.db"
+            path.write_bytes(data)
+            src = sqlite3.connect(path)
+            try:
+                tables = {r[0] for r in src.execute("SELECT name FROM sqlite_master WHERE type = 'table'")}
+            except sqlite3.DatabaseError as exc:
+                src.close()
+                raise ValueError("That file is not a LeadScout backup.") from exc
+            try:
+                if not self.REQUIRED_TABLES <= tables:
+                    raise ValueError("That file is not a LeadScout backup.")
+                counts = {t: src.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0] for t in sorted(self.REQUIRED_TABLES)}
+                self.conn.commit()
+                src.backup(self.conn)
+            finally:
+                src.close()
+        self._migrate()          # an older backup gets any newer columns
+        self.conn.commit()
+        return counts
+
     @contextmanager
     def tx(self) -> Iterator[sqlite3.Connection]:
         try:

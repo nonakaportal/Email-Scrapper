@@ -64,20 +64,30 @@ The dashboard has five screens:
 Runs started from the dashboard continue in the background while you switch screens. The CLI
 and the dashboard share the same database.
 
-### Sharing a demo online (Streamlit Community Cloud, free)
+### Sharing it with your team online (Streamlit Community Cloud, free)
 
-1. Push this folder to a GitHub repository. `.gitignore` already excludes the database, exports
-   and logs.
-2. At https://share.streamlit.io, create an app from that repo with main file `app/dashboard.py`.
-3. Under the app's **Secrets**, add:
+1. Push this folder to a GitHub repository (private is fine). `.gitignore` already keeps your
+   settings, database, exports and logs off GitHub.
+2. Go to https://share.streamlit.io, sign in with that GitHub account and allow access to the
+   repository.
+3. **Create app**: repository `your-account/your-repo`, branch `master`, main file
+   `app/dashboard.py`. Under **Advanced settings** pick Python 3.12, and paste the secrets:
    ```toml
-   contact_email = "you@yourdomain.com"
-   app_password = "choose-a-password"   # visitors must enter it; keeps strangers from running crawls
+   contact_email = "you@yourdomain.com"   # shown to websites and required by the place search
+   app_password = "choose-a-team-password" # everyone must enter it to open the app
    ```
+4. **Deploy**. You get a link like `https://your-app.streamlit.app` for your team.
+5. Optionally, in the app's **Sharing** settings, make it visible only to people you invite by
+   email. The password still applies.
 
-Keep in mind that the hosted database is temporary and is wiped whenever the app restarts, so
-export what you need. Also keep demo runs small (Max businesses 20–50), because free hosting has
-limited CPU and memory. For regular use, run it on your own machine.
+What to expect on the free plan:
+- **Data is wiped** when the app restarts or wakes from sleep. Use **Settings → Backup →
+  Download backup** after each run, and **Restore** it after a restart. Export leads you need.
+- **Limited memory.** Keep runs small (one city, one or two industries, Max businesses 50–300).
+  A very large area can crash the app, and then the data is wiped.
+- **No mailbox check or email guessing** (the host blocks port 25). Everything else works.
+- One search runs at a time, shared by everyone. Others can browse and export meanwhile.
+- The app sleeps after some days without visitors; the next visitor wakes it (about a minute).
 
 ## Commands
 
