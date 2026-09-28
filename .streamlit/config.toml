@@ -1,6 +1,27 @@
+# "Field Ledger" look (design/stitch): warm paper ground, dark ink sidebar, deep indigo actions.
 [theme]
-primaryColor = "#1f6feb"
-font = "sans serif"
+base = "light"
+primaryColor = "#26408B"
+backgroundColor = "#F4F2EC"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#17191C"
+linkColor = "#26408B"
+borderColor = "#E2DED4"
+dataframeBorderColor = "#E2DED4"
+dataframeHeaderBackgroundColor = "#F8F6F1"
+showWidgetBorder = true
+baseRadius = "8px"
+font = "'IBM Plex Sans':https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+headingFont = "'Bricolage Grotesque':https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&display=swap"
+codeFont = "'JetBrains Mono':https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+
+[theme.sidebar]
+backgroundColor = "#15181C"
+secondaryBackgroundColor = "#2A2F37"
+textColor = "#D9D6CF"
+borderColor = "#2A2F37"
+linkColor = "#AFC0F0"
+codeBackgroundColor = "#2A2F37"
 
 [server]
 headless = true

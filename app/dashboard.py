@@ -92,21 +92,6 @@ def manager() -> RunManager:
     return RunManager(cfg, store)
 
 
-def password_gate() -> None:
-    password = os.environ.get("LEADSCOUT_APP_PASSWORD") or _secret("app_password")
-    if not password or st.session_state.get("authed"):
-        return
-    st.title("LeadScout")
-    with st.form("login"):
-        entered = st.text_input("Password", type="password")
-        if st.form_submit_button("Enter", type="primary"):
-            if entered == password:
-                st.session_state["authed"] = True
-                st.rerun()
-            st.error("Wrong password.")
-    st.stop()
-
-
 def active_job():
     jobs = registry().active()
     return jobs[0] if jobs else None
@@ -979,7 +964,8 @@ def yaml_editor(filename: str, help_text: str, validate=None) -> None:
 
 # -------------------------------------------------------------- app shell
 
-password_gate()
+st.logo(str(ROOT / "app" / "assets" / "logo.svg"), size="large",
+        icon_image=str(ROOT / "app" / "assets" / "mark.svg"))
 
 PAGES = {
     "search": st.Page(page_new_search, title="New search", icon=":material/search:", default=True),
@@ -988,7 +974,12 @@ PAGES = {
     "runs": st.Page(page_runs, title="Runs", icon=":material/history:", url_path="runs"),
     "settings": st.Page(page_settings, title="Settings", icon=":material/settings:", url_path="settings"),
 }
-nav = st.navigation(list(PAGES.values()), position="top")
+nav = st.navigation(list(PAGES.values()), position="sidebar")
+latest = store.list_runs(1)
+if latest:
+    with st.sidebar:
+        st.caption("Latest run")
+        st.page_link(PAGES["progress"], label=run_label(latest[0]), icon=":material/radar:")
 running = active_job()
 if running and nav is not PAGES["progress"]:
     st.info(f"Run #{running.run_id} is running in the background.", icon=":material/sync:")
