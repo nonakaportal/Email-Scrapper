@@ -305,9 +305,10 @@ them.
   per-site limits predictable.
 - **Settings saved from the web go to `config/settings.local.yaml`.** They are layered on top of
   `settings.yaml`, so the commented defaults file is never rewritten.
-- **Hosted demos.** `contact_email` can come from Streamlit secrets. There is no password in the
-  app: access is controlled by the host (Streamlit Cloud "only specific people" sharing), which
-  gives each teammate their own login instead of one shared password.
+- **Hosted demos.** `contact_email` and `app_password` can come from Streamlit secrets. The
+  team sign-in screen stops strangers from using a public link to crawl sites or download leads;
+  host-level sharing ("only specific people") can be added on top. The password is compared in
+  constant time.
 - **Downloads count as exports.** A dashboard download is recorded as an export, so "Only new"
   works the same as in the CLI.
 

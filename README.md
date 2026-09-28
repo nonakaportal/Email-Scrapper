@@ -74,11 +74,13 @@ and the dashboard share the same database.
    `app/dashboard.py`. Under **Advanced settings** pick Python 3.12, and paste the secrets:
    ```toml
    contact_email = "you@yourdomain.com"   # shown to websites and required by the place search
+   app_password = "choose-a-team-password" # everyone must enter it to open the app
    ```
-4. **Deploy**. You get a link like `https://your-app.streamlit.app` for your team.
-5. In the app's **Sharing** settings, choose "Only specific people can view this app" and invite
-   your team by email. The app has no password of its own, so this is what keeps strangers from
-   running searches or downloading your leads.
+4. **Deploy**. You get a link like `https://your-app.streamlit.app` for your team. It opens on a
+   "Team sign-in" screen; send the link and the password separately.
+5. Optionally, in the app's **Sharing** settings, choose "Only specific people can view this app"
+   and invite your team by email. The password still applies. Without `app_password` the app
+   opens with no sign-in, so anyone with the link can run searches and download your leads.
 
 What to expect on the free plan:
 - **Data is wiped** when the app restarts or wakes from sleep. Use **Settings → Backup →

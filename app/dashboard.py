@@ -5,6 +5,7 @@ Run locally:   streamlit run app/dashboard.py
 
 from __future__ import annotations
 
+import hmac
 import os
 import sys
 import time
@@ -90,6 +91,71 @@ store = Store(cfg.db_path)
 
 def manager() -> RunManager:
     return RunManager(cfg, store)
+
+
+LOGIN_CSS = """<style>
+.ls-hero { background: #15181C; color: #D9D6CF; border-radius: 16px; padding: 48px 56px;
+           min-height: 560px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px; }
+.ls-brand { display: flex; align-items: center; gap: 12px; color: #FFFFFF; font-size: 22px; font-weight: 600; }
+.ls-mark { width: 40px; height: 40px; border-radius: 10px; background: #26408B;
+           display: flex; align-items: center; justify-content: center; }
+.ls-hero h1 { font-size: 44px; line-height: 1.08; color: #FFFFFF; margin: auto 0 0; padding: 0;
+              letter-spacing: -0.01em; }
+.ls-hero p { font-size: 17px; line-height: 1.55; color: #B4B1AA; margin: 0; }
+.ls-points { display: flex; flex-direction: column; gap: 18px; border-top: 1px solid #2A2F37; padding-top: 28px; }
+.ls-point { display: flex; gap: 14px; align-items: flex-start; }
+.ls-icon { width: 34px; height: 34px; flex-shrink: 0; border: 1px solid #2A2F37; border-radius: 8px;
+           display: flex; align-items: center; justify-content: center; color: #D9D6CF; }
+.ls-point b { display: block; color: #F1EFEA; font-weight: 500; font-size: 15px; }
+.ls-point span { color: #9A9890; font-size: 13.5px; }
+.st-key-login { background: #FFFFFF; padding: 12px 8px; }
+.st-key-login button { min-height: 44px; }
+</style>"""
+
+_ICON = ('<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+         'stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">{}</svg>')
+LOGIN_HERO = f"""<div class="ls-hero">
+  <div class="ls-brand"><div class="ls-mark">{_ICON.format(
+      '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>')}</div>LeadScout</div>
+  <h1>Small-business leads, checked before you send.</h1>
+  <p>Find businesses on the open map, read their websites for emails and the people behind them,
+     and verify every address.</p>
+  <div class="ls-points">
+    <div class="ls-point"><div class="ls-icon">{_ICON.format(
+        '<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/>')}</div>
+      <div><b>Map data from Overture Maps</b><span>Businesses listed in the free, open Overture Maps data.</span></div></div>
+    <div class="ls-point"><div class="ls-icon">{_ICON.format(
+        '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>')}</div>
+      <div><b>Emails written on the business's own website</b><span>Read from its contact, about and team pages.</span></div></div>
+    <div class="ls-point"><div class="ls-icon">{_ICON.format(
+        '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6l-7-3z"/><path d="m9 12 2 2 4-4"/>')}</div>
+      <div><b>Guessed emails kept only when the mail server confirms</b><span>Unconfirmed guesses are dropped, never exported.</span></div></div>
+  </div>
+</div>"""
+
+
+def password_gate() -> None:
+    """Team sign-in, shown when a password is set (Streamlit secret ``app_password`` or the
+    LEADSCOUT_APP_PASSWORD environment variable). Without one the app opens directly."""
+    password = os.environ.get("LEADSCOUT_APP_PASSWORD") or _secret("app_password")
+    if not password or st.session_state.get("authed"):
+        return
+    st.html(LOGIN_CSS)
+    hero, form = st.columns([11, 9], gap="large", vertical_alignment="center")
+    hero.html(LOGIN_HERO)
+    with form:
+        with st.form("login"):
+            st.markdown("### Team sign-in")
+            st.caption("Enter the team password to open LeadScout.")
+            entered = st.text_input("Team password", type="password")
+            if st.form_submit_button("Open LeadScout", type="primary", width="stretch",
+                                     icon=":material/arrow_forward:"):
+                if hmac.compare_digest(entered.encode(), str(password).encode()):
+                    st.session_state["authed"] = True
+                    st.rerun()
+                st.error("Wrong password.")
+        st.caption("Don't have the password? Ask the person who set up LeadScout for your team.")
+    st.stop()
 
 
 def active_job():
@@ -963,6 +1029,8 @@ def yaml_editor(filename: str, help_text: str, validate=None) -> None:
 
 
 # -------------------------------------------------------------- app shell
+
+password_gate()
 
 st.logo(str(ROOT / "app" / "assets" / "logo.svg"), size="large",
         icon_image=str(ROOT / "app" / "assets" / "mark.svg"))
