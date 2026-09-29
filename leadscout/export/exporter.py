@@ -94,7 +94,7 @@ def guess_first_name(email: str, email_type: str | None) -> str:
 
 
 def main_designation(row) -> str:
-    """The main email's designation. When it has none and belongs to no one in particular
+    """An email's designation (main and email_2, email_3 ...). When it has none and belongs to no one in particular
     (bobsplumbing@gmail.com, cga@x.com ...), the business owner's name goes here instead, so the
     row still says who to address. A person's own email, or "Sales", "General inbox" ..., stays."""
     if not row["contact_name"] and not row["designation"] and row["owner_name"]:
@@ -195,7 +195,7 @@ def select_leads(store: Store, filters: ExportFilters,
                 lead["other_emails"].append(r["email"])
                 lead["other_contacts"].append(describe_contact(r))
                 lead["others"].append({"email": r["email"], "name": r["contact_name"] or "",
-                                       "designation": r["designation"] or ""})
+                                       "designation": main_designation(r)})
                 lead["email_ids"].append(r["email_id"])
                 if guessed:
                     lead["guessed"].add(r["email"])

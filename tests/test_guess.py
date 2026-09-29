@@ -167,3 +167,15 @@ def test_owner_fills_designation_when_main_email_has_no_person():
     assert main_designation(person) == "Office Manager"            # a person's own email keeps their title
     assert main_designation({**blank, "contact_name": "Rebecca Stone"}) == ""    # her email, title unknown
     assert main_designation({**blank, "owner_name": "", "owner_title": ""}) == ""
+
+
+def test_owner_fills_empty_designation_in_other_columns(cfg, store):
+    manager, run_id, bid, asked = setup(cfg, store, {})
+    store._update("businesses", bid, {"owner_name": "Chris Martinez", "owner_title": "President"})
+    store.add_email(bid, "cga@centralelectricsa.com", email_type="generic", source="website",
+                    found_on_url="https://centralelectricsa.com/contact", is_freemail=False)
+    store.conn.execute("UPDATE emails SET status = 'valid' WHERE email = 'cga@centralelectricsa.com'")
+    store.conn.commit()
+    (lead,) = select_leads(store, ExportFilters(run_id=run_id), cfg.email_rules["freemail_domains"])
+    other = next(o for o in lead["others"] if o["email"] == "cga@centralelectricsa.com")
+    assert (other["name"], other["designation"]) == ("", "Chris Martinez (President)")
