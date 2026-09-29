@@ -26,6 +26,7 @@ OBFUSCATED_RE = re.compile(
     re.I,
 )
 _DOT_SPLIT = re.compile(_DOT, re.I)
+GLUED_PHONE_RE = re.compile(r"^\+?1?[-. ]?\(?\d{3}\)?[-. ]?\d{3,4}(?:[-.]\d{3,4})?(?:e-?mail:?)?(?=[a-z])")
 CFEMAIL_RE = re.compile(r"""data-cfemail=["']([0-9a-fA-F]+)["']""")
 CFLINK_RE = re.compile(r"/cdn-cgi/l/email-protection#([0-9a-fA-F]+)")
 COPYRIGHT_RE = re.compile(
@@ -117,6 +118,8 @@ def clean_email(raw: str) -> str | None:
     email = email.split("?")[0]
     # Leftovers of JSON-escaped text, e.g. ">info@x.com".
     email = re.sub(r"^(?:u00[0-9a-f]{2})+", "", email)
+    # A phone number printed right before the address with no space: "294-3993emailinfo@x.com".
+    email = GLUED_PHONE_RE.sub(lambda m: "" if re.search(r"[-.()]", m.group()) else m.group(), email)
     m = EMAIL_RE.fullmatch(email)
     if not m:
         return None

@@ -43,7 +43,8 @@ Probe = Callable[[str, list[str], str, str, float], dict[str, MailboxResult]]
 PORT25_TEST_HOST = "gmail-smtp-in.l.google.com"
 # A 5xx reply with these words is about us (our IP, a blocklist, a policy), not the mailbox.
 BLOCKED_WORDS = ("block", "spam", "policy", "blacklist", "blocklist", "spamhaus", "reputation",
-                 "not allowed", "rejected due", "client host", "authentication", "relay")
+                 "not allowed", "rejected due", "client host", "authentication", "relay",
+                 "helo", "ehlo", "reverse dns", "rdns", "ptr record")
 # ... and these mean the mailbox really doesn't exist.
 NO_MAILBOX_WORDS = ("user unknown", "unknown user", "no such user", "does not exist", "doesn't exist",
                     "mailbox unavailable", "mailbox not found", "invalid recipient", "recipient not found",
@@ -57,6 +58,27 @@ def port25_open(host: str = PORT25_TEST_HOST, timeout: float = 6) -> bool:
         return True
     except OSError:
         return False
+
+
+def public_helo(timeout: float = 10) -> str | None:
+    """A proper HELO name for this connection: its public IP's reverse-DNS name, or else the IP
+    as an address literal ("[103.201.135.81]", allowed by RFC 5321). Mail servers see this IP
+    anyway. None when the test mail server can't be reached."""
+    try:
+        with smtplib.SMTP(PORT25_TEST_HOST, 25, timeout=timeout, local_hostname="localhost") as s:
+            _, reply = s.ehlo()
+    except (OSError, smtplib.SMTPException):
+        return None
+    ip = re.search(r"\[([0-9a-fA-F.:]+)\]", reply.decode(errors="ignore"))
+    if not ip:
+        return None
+    try:
+        name = socket.gethostbyaddr(ip.group(1))[0]
+    except OSError:
+        name = ""
+    if "." in name:
+        return name
+    return f"[IPv6:{ip.group(1)}]" if ":" in ip.group(1) else f"[{ip.group(1)}]"
 
 
 def mx_host(domain: str, timeout: float = 5) -> str | None:
@@ -79,7 +101,8 @@ def _reply(code: int, message: bytes | str) -> MailboxResult:
         return "valid", "mailbox exists (mail server confirmed)"
     if code >= 500:
         lower = text.lower()
-        enhanced = ENHANCED_CODE.search(text)
+        # The status code matches the reply's class (5.1.1 for a 550); "RFC5321 4.1.1.1" is not one.
+        enhanced = next((m for m in ENHANCED_CODE.finditer(text) if m.group(1) == str(code)[0]), None)
         subject = enhanced.group(2) if enhanced else None      # 5.1.x = address, 5.7.x = policy
         if subject == "1":
             return "invalid", f"mailbox does not exist ({code} {short})"
@@ -154,7 +177,10 @@ class MailboxChecker:
         # mail servers themselves use for address checks, so no one's real address is handed out.
         from_domain = (cfg.get("email.smtp_from_domain") or "").strip().lstrip("@")
         self.sender = f"verify@{from_domain}" if from_domain else ""
-        self.helo = from_domain or socket.getfqdn()
+        fqdn = socket.getfqdn()
+        # The name we greet mail servers with (HELO). It must be a full internet name: a bare
+        # computer name ("Abhishek") gets rejected, and would hand out the PC's name.
+        self.helo = from_domain or (fqdn if "." in fqdn and not fqdn.endswith(".local") else "")
         self.probe = probe or smtp_probe
         self.mx_lookup = mx_lookup or mx_host
         self.port_check = port_check or port25_open
@@ -164,6 +190,9 @@ class MailboxChecker:
     def available(self) -> bool:
         if self._port_ok is None:
             self._port_ok = bool(self.port_check())
+            if self._port_ok and not self.helo and self.probe is smtp_probe:
+                self.helo = public_helo() or "localhost"
+                log.info("Mailbox check greets mail servers as %s", self.helo)
             if not self._port_ok:
                 log.warning("Mailbox check skipped: outbound port 25 is blocked on this network "
                             "(common for home internet and cloud hosts). Emails keep the basic check.")

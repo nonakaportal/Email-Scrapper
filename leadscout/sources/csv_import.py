@@ -7,6 +7,7 @@ import io
 import re
 from pathlib import Path
 
+from leadscout.crawler.extract import EMAIL_RE, clean_email
 from leadscout.normalize import normalize_domain, normalize_url
 from leadscout.sources.base import BusinessCandidate
 
@@ -25,6 +26,21 @@ COLUMN_ALIASES = {
 
 class CSVImportError(ValueError):
     pass
+
+
+# "Email", "Emails", "Email 2", "email_3", "E-mail" (not "Email 1 status").
+EMAIL_COLUMN = re.compile(r"e_?mails?(?:_?\d+)?")
+
+
+def _emails(cells) -> list[str]:
+    """Real addresses from the email cells; "0", "N/A", links and stray text are skipped."""
+    found: list[str] = []
+    for cell in cells:
+        for m in EMAIL_RE.finditer(cell):
+            email = clean_email(m.group(1))
+            if email and email not in found:
+                found.append(email)
+    return found
 
 
 def _column_key(name: str) -> str:
@@ -75,6 +91,7 @@ def read_csv(path: str | Path) -> list[BusinessCandidate]:
             raise CSVImportError(
                 f"{path.name} needs a website column (one of: {', '.join(COLUMN_ALIASES['website'])})."
             )
+        email_cols = [f for f in reader.fieldnames or [] if f and EMAIL_COLUMN.fullmatch(_column_key(f))]
         out = []
         for i, row in enumerate(reader, start=2):
             get = lambda k: (row.get(cols[k]) or "").strip() if k in cols else ""  # noqa: E731
@@ -94,6 +111,6 @@ def read_csv(path: str | Path) -> list[BusinessCandidate]:
                 country=country if len(country) == 2 else None,
                 phone=get("phone") or None,
                 website=website,
-                emails=[e.strip() for e in get("email").replace(",", ";").split(";") if e.strip()],
+                emails=_emails(row[c] or "" for c in email_cols),
             ))
     return out

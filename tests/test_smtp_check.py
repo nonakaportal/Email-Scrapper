@@ -85,6 +85,7 @@ def test_connection_failure_is_unknown(monkeypatch):
     (550, "No such user here", "invalid"),
     (554, "5.7.1 Service unavailable; Client host [1.2.3.4] blocked using Spamhaus", "unknown"),
     (550, "Rejected due to poor IP reputation", "unknown"),
+    (550, "Access denied - Invalid HELO name (See RFC5321 4.1.1.1)", "unknown"),   # about us, not the mailbox
     (450, "4.2.1 Try again later", "unknown"),
     (421, "Too many connections", "unknown"),
 ])
@@ -189,3 +190,12 @@ def test_bad_mode(cfg, store):
     with pytest.raises(ValueError):
         manager.create_search_run(["dentists"], [LocationSpec("place", "Austin, Texas, USA")],
                                   verification="extreme")
+
+
+def test_bare_computer_name_is_not_used_as_helo(cfg, store, monkeypatch):
+    """A PC name like "Abhishek" gets rejected by mail servers ("need fully-qualified hostname")."""
+    monkeypatch.setattr(smtp_check.socket, "getfqdn", lambda: "Abhishek")
+    monkeypatch.setattr(smtp_check, "public_helo", lambda: "[203.0.113.7]")
+    checker = MailboxChecker(cfg, store, port_check=lambda: True)
+    assert checker.helo == ""
+    assert checker.available() and checker.helo == "[203.0.113.7]"

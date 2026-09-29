@@ -97,3 +97,14 @@ def test_multi_location_needs_locator_or_several_location_pages():
     assert detect_multi_location([("https://a.com/x", "Store Locator")])
     assert detect_multi_location([(f"https://a.com/locations/{c}", c) for c in ("austin", "dallas", "waco")])
     assert not detect_multi_location([(f"https://a.com/locations/{c}", c) for c in ("austin", "dallas")])
+
+
+@pytest.mark.parametrize("raw,email", [
+    ("294-3993emailinfo@secrethawaiitours.com", "info@secrethawaiitours.com"),
+    ("808-879-0080vacationrentals@destinationmaui.net", "vacationrentals@destinationmaui.net"),
+    ("(808) 555-1234info@a.com", "info@a.com"),
+    ("2019hes@gmail.com", "2019hes@gmail.com"),          # digits without a phone shape are kept
+    ("5551234john@x.com", "5551234john@x.com"),
+])
+def test_phone_glued_to_email(raw, email):
+    assert clean_email(raw) == email
