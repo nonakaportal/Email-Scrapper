@@ -93,6 +93,14 @@ def guess_first_name(email: str, email_type: str | None) -> str:
     return local.capitalize()
 
 
+def main_designation(row) -> str:
+    """The main email's designation. When no person is attached to it (info@, office@ ...), the
+    business owner's name goes here instead, so the row still says who to address."""
+    if not row["contact_name"] and row["owner_name"]:
+        return row["owner_name"] + (f" ({row['owner_title']})" if row["owner_title"] else "")
+    return row["designation"] or ""
+
+
 def describe_contact(row) -> str:
     """'Mark Chen (Office Manager) <mark@x.com>' / 'Billing / Accounts <billing@x.com>' / 'info@x.com'."""
     who = row["contact_name"] or ""
@@ -208,7 +216,7 @@ def select_leads(store: Store, filters: ExportFilters,
             "first_name": (r["contact_name"] or "").split()[0] if r["contact_name"]
                           else guess_first_name(r["email"], r["email_type"]),
             "contact_name": r["contact_name"] or "",
-            "designation": r["designation"] or "",
+            "designation": main_designation(r),
             "decision_maker": "yes" if r["decision_maker"] else "",
             "owner_name": r["owner_name"] or "",
             "owner_title": r["owner_title"] or "",

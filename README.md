@@ -159,7 +159,10 @@ anna@, info@ and billing@ at one dental practice, they count as **one lead**. Th
 best email (the decision maker first, then personal and valid), and each colleague gets their
 own columns in the export: `email_2`, `name_2`, `designation_2`, then `email_3`, `name_3`,
 `designation_3`, and so on (as many as the company with the most colleagues needs; empty when
-a company has fewer). The dashboard shows them together in "Other contacts". The same company
+a company has fewer). The dashboard shows them together in "Other contacts". When the main
+email belongs to no one in particular (info@, office@ ...), its `designation` shows the owner
+instead, e.g. `Chris Martinez (President)`, so you know who to address; `email_2`... columns are
+not changed. The same company
 appearing twice on the map (same website, or the same company email domain) is also one lead.
 Two unrelated businesses that both use gmail.com are never merged. Use `--per-email` (CLI) or turn
 off "One lead per company" (dashboard) to get one row per address.
