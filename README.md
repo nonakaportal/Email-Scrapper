@@ -160,9 +160,9 @@ best email (the decision maker first, then personal and valid), and each colleag
 own columns in the export: `email_2`, `name_2`, `designation_2`, then `email_3`, `name_3`,
 `designation_3`, and so on (as many as the company with the most colleagues needs; empty when
 a company has fewer). The dashboard shows them together in "Other contacts". When the main
-email belongs to no one in particular (info@, office@ ...), its `designation` shows the owner
-instead, e.g. `Chris Martinez (President)`, so you know who to address; `email_2`... columns are
-not changed. The same company
+email has no designation and belongs to no one in particular (bobsplumbing@gmail.com, cga@...),
+its `designation` shows the owner instead, e.g. `Chris Martinez (President)`, so you know who to
+address. Labels like "General inbox" or "Sales" stay, and `email_2`... columns are not changed. The same company
 appearing twice on the map (same website, or the same company email domain) is also one lead.
 Two unrelated businesses that both use gmail.com are never merged. Use `--per-email` (CLI) or turn
 off "One lead per company" (dashboard) to get one row per address.

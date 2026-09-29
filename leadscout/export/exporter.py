@@ -94,9 +94,10 @@ def guess_first_name(email: str, email_type: str | None) -> str:
 
 
 def main_designation(row) -> str:
-    """The main email's designation. When no person is attached to it (info@, office@ ...), the
-    business owner's name goes here instead, so the row still says who to address."""
-    if not row["contact_name"] and row["owner_name"]:
+    """The main email's designation. When it has none and belongs to no one in particular
+    (bobsplumbing@gmail.com, cga@x.com ...), the business owner's name goes here instead, so the
+    row still says who to address. A person's own email, or "Sales", "General inbox" ..., stays."""
+    if not row["contact_name"] and not row["designation"] and row["owner_name"]:
         return row["owner_name"] + (f" ({row['owner_title']})" if row["owner_title"] else "")
     return row["designation"] or ""
 

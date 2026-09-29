@@ -160,10 +160,10 @@ def test_mailbox_check_asks_gmail_but_not_yahoo(cfg, store):
 
 def test_owner_fills_designation_when_main_email_has_no_person():
     from leadscout.export.exporter import main_designation
-    inbox = {"contact_name": "", "designation": "General inbox", "owner_name": "Chris Martinez",
-             "owner_title": "President"}
-    assert main_designation(inbox) == "Chris Martinez (President)"
-    person = {**inbox, "contact_name": "Rebecca Stone", "designation": "Office Manager"}
+    blank = {"contact_name": "", "designation": "", "owner_name": "Chris Martinez", "owner_title": "President"}
+    assert main_designation(blank) == "Chris Martinez (President)"      # e.g. bobsplumbing@gmail.com
+    assert main_designation({**blank, "designation": "General inbox"}) == "General inbox"   # info@ keeps its label
+    person = {**blank, "contact_name": "Rebecca Stone", "designation": "Office Manager"}
     assert main_designation(person) == "Office Manager"            # a person's own email keeps their title
-    no_owner = {**inbox, "owner_name": "", "owner_title": ""}
-    assert main_designation(no_owner) == "General inbox"
+    assert main_designation({**blank, "contact_name": "Rebecca Stone"}) == ""    # her email, title unknown
+    assert main_designation({**blank, "owner_name": "", "owner_title": ""}) == ""
