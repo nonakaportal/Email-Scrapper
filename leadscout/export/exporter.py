@@ -185,6 +185,8 @@ def select_leads(store: Store, filters: ExportFilters,
             if lead is not None:          # another person at a company we already have
                 lead["other_emails"].append(r["email"])
                 lead["other_contacts"].append(describe_contact(r))
+                lead["others"].append({"email": r["email"], "name": r["contact_name"] or "",
+                                       "designation": r["designation"] or ""})
                 lead["email_ids"].append(r["email_id"])
                 if guessed:
                     lead["guessed"].add(r["email"])
@@ -200,6 +202,7 @@ def select_leads(store: Store, filters: ExportFilters,
             "guessed": {r["email"]} if guessed else set(),   # for colour coding, not a column
             "other_emails": [],
             "other_contacts": [],
+            "others": [],                                     # the same contacts, one column each on export
             "email_status": r["email_status"],
             "email_type": r["email_type"],
             "first_name": (r["contact_name"] or "").split()[0] if r["contact_name"]
@@ -251,8 +254,9 @@ def render_export(leads: list[dict], *, fmt: str = "csv", template: str = "defau
     if fmt not in ("csv", "xlsx"):
         raise ValueError("Format must be csv or xlsx")
     columns = [(c, c) for c in columns] if columns else TEMPLATES[template]
+    columns = _split_other_contacts(columns, leads)
     header = [dst for _, dst in columns]
-    rows = [[_cell(lead.get(src, "")) for src, _ in columns] for lead in leads]
+    rows = [[_cell(_value(lead, src)) for src, _ in columns] for lead in leads]
     if fmt == "csv":
         buf = io.StringIO(newline="")
         writer = csv.writer(buf)
@@ -282,6 +286,8 @@ def render_export(leads: list[dict], *, fmt: str = "csv", template: str = "defau
             cell = ws.cell(row=row_no, column=col_no)
             if src == "email" and lead.get("email"):
                 cell.fill = fills[lead["email"] in guessed]
+            elif _OTHER.fullmatch(src) and src.startswith("email_") and cell.value:
+                cell.fill = fills[cell.value in guessed]
             elif src in ("other_contacts", "other_emails") and lead.get(src):
                 parts = []
                 for i, item in enumerate(lead[src]):
@@ -301,6 +307,32 @@ def render_export(leads: list[dict], *, fmt: str = "csv", template: str = "defau
 
 EMAIL_GREEN, EMAIL_GREEN_TEXT = "C6EFCE", "006100"      # Excel's "good" colours
 EMAIL_YELLOW, EMAIL_YELLOW_TEXT = "FFEB9C", "9C5700"    # Excel's "neutral" colours
+
+
+_OTHER = re.compile(r"(email|name|designation)_(\d+)")
+
+
+def _split_other_contacts(columns: list[tuple[str, str]], leads: list[dict]) -> list[tuple[str, str]]:
+    """The "other_contacts" column becomes email_2, name_2, designation_2, email_3 ... (as many
+    as the lead with the most colleagues needs), so each person's details sit in their own cells."""
+    most = max((len(lead.get("others") or []) for lead in leads), default=0)
+    out = []
+    for src, dst in columns:
+        if src != "other_contacts":
+            out.append((src, dst))
+            continue
+        for n in range(2, most + 2):
+            out += [(f"{field}_{n}", f"{field}_{n}") for field in ("email", "name", "designation")]
+    return out
+
+
+def _value(lead: dict, src: str):
+    m = _OTHER.fullmatch(src)
+    if m and src not in lead:
+        others = lead.get("others") or []
+        n = int(m.group(2)) - 2
+        return others[n][m.group(1)] if n < len(others) else ""
+    return lead.get(src, "")
 
 
 def _cell(value):

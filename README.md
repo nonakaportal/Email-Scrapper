@@ -156,9 +156,10 @@ Gmail and similar.
 
 **One lead per company.** When several people at the same company have an email, such as
 anna@, info@ and billing@ at one dental practice, they count as **one lead**. The row holds the
-best email (the decision maker first, then personal and valid), and the colleagues go in the
-`other_contacts` column with their designations, for example
-`Mark Chen (Office Manager) <mark@x.com>; Billing / Accounts <billing@x.com>`. The same company
+best email (the decision maker first, then personal and valid), and each colleague gets their
+own columns in the export: `email_2`, `name_2`, `designation_2`, then `email_3`, `name_3`,
+`designation_3`, and so on (as many as the company with the most colleagues needs; empty when
+a company has fewer). The dashboard shows them together in "Other contacts". The same company
 appearing twice on the map (same website, or the same company email domain) is also one lead.
 Two unrelated businesses that both use gmail.com are never merged. Use `--per-email` (CLI) or turn
 off "One lead per company" (dashboard) to get one row per address.
@@ -173,7 +174,7 @@ The **owner** columns name the business's owner even when their own email isn't 
 person the website calls owner/founder, or the person the business is named after ("Larson
 Dental" → Dr. Craig Larson, "Kirk Rathburn" at rathburndental.com). The dashboard shows why.
 Export columns: `contact_name`, `designation`, `decision_maker`, `owner_name`, `owner_title`,
-`other_contacts` (mapped to Job Title in the Instantly, Smartlead, lemlist and HubSpot templates).
+`email_2`/`name_2`/`designation_2`… (`designation` is mapped to Job Title in the Instantly, Smartlead, lemlist and HubSpot templates).
 
 **People and seniority.** LeadScout lists the people each company names on its website
 (`key_people`, most senior first, with their email when published). It reads team cards,

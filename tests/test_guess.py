@@ -85,8 +85,12 @@ def test_confirmed_guess_is_kept_after_the_written_email(cfg, store):
     header = [c.value for c in ws[1]]
     email_cell = ws.cell(row=2, column=header.index("email") + 1)
     assert email_cell.fill.fgColor.rgb.endswith("C6EFCE")         # green: written
-    others = ws.cell(row=2, column=header.index("other_contacts") + 1).value
-    assert any(getattr(part, "font", None) and part.font.color.rgb.endswith("9C5700") for part in others)  # yellow
+    col = header.index("email_2") + 1                               # colleagues get their own columns
+    assert header[col - 1:col + 2] == ["email_2", "name_2", "designation_2"]
+    assert [ws.cell(row=2, column=col + i).value for i in range(3)] == [
+        "chris@centralelectricsa.com", "Chris Martinez", "President"]
+    assert ws.cell(row=2, column=col).fill.fgColor.rgb.endswith("FFEB9C")      # yellow: guessed
+    assert "other_contacts" not in header
     assert "guessed_emails" not in header                         # no separate column
     assert "Colour key" in wb.sheetnames
 
@@ -122,3 +126,20 @@ def test_guess_is_main_only_without_written_email(cfg, store):
     ws = load_workbook(io.BytesIO(render_export([lead], fmt="xlsx")))["Leads"]
     header = [c.value for c in ws[1]]
     assert ws.cell(row=2, column=header.index("email") + 1).fill.fgColor.rgb.endswith("FFEB9C")   # yellow
+
+
+def test_other_contacts_columns_csv():
+    """Each colleague gets email_N, name_N, designation_N; leads with fewer colleagues leave them empty."""
+    import csv
+    leads = [
+        {"business_name": "A", "email": "a@a.com", "others": [
+            {"email": "b@a.com", "name": "Bea Diaz", "designation": "Owner"},
+            {"email": "info@a.com", "name": "", "designation": "General inbox"}]},
+        {"business_name": "B", "email": "x@b.com", "others": []},
+    ]
+    rows = list(csv.reader(io.StringIO(render_export(
+        leads, columns=["business_name", "email", "other_contacts"]).decode("utf-8-sig"))))
+    assert rows[0] == ["business_name", "email", "email_2", "name_2", "designation_2",
+                       "email_3", "name_3", "designation_3"]
+    assert rows[1] == ["A", "a@a.com", "b@a.com", "Bea Diaz", "Owner", "info@a.com", "", "General inbox"]
+    assert rows[2] == ["B", "x@b.com", "", "", "", "", "", ""]
