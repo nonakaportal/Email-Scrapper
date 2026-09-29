@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import io
 from pathlib import Path
 
 from leadscout.normalize import normalize_domain, normalize_url
@@ -40,11 +41,22 @@ def _match_columns(fieldnames: list[str]) -> dict[str, str]:
     return mapping
 
 
+def _decode(data: bytes) -> str:
+    """CSV text as UTF-8, or as Excel's Windows encoding when it isn't (e.g. byte 0xA0,
+    Excel's non-breaking space)."""
+    for encoding in ("utf-8-sig", "cp1252"):
+        try:
+            return data.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+    return data.decode("latin-1")
+
+
 def read_csv(path: str | Path) -> list[BusinessCandidate]:
     path = Path(path)
     if not path.exists():
         raise CSVImportError(f"File not found: {path}")
-    with path.open(newline="", encoding="utf-8-sig") as fh:
+    with io.StringIO(_decode(path.read_bytes()), newline="") as fh:
         sample = fh.read(4096)
         fh.seek(0)
         try:
