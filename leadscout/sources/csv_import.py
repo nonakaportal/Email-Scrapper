@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import io
+import re
 from pathlib import Path
 
 from leadscout.normalize import normalize_domain, normalize_url
@@ -26,17 +27,22 @@ class CSVImportError(ValueError):
     pass
 
 
+def _column_key(name: str) -> str:
+    """"Business Name", "business-name", "businessName" and "business_name" all match."""
+    name = re.sub(r"(?<=[a-z])(?=[A-Z])", "_", name.strip())
+    return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
+
+
 def _match_columns(fieldnames: list[str]) -> dict[str, str]:
-    lookup = {f.strip().lower().replace("-", "_"): f for f in fieldnames if f}
+    lookup = {}
+    for f in fieldnames:
+        if f and _column_key(f):
+            lookup.setdefault(_column_key(f), f)
     mapping = {}
     for target, aliases in COLUMN_ALIASES.items():
         for alias in aliases:
-            key = alias.replace(" ", "_")
-            if key in lookup:
-                mapping[target] = lookup[key]
-                break
-            if alias in lookup:
-                mapping[target] = lookup[alias]
+            if _column_key(alias) in lookup:
+                mapping[target] = lookup[_column_key(alias)]
                 break
     return mapping
 
