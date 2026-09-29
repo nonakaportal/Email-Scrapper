@@ -75,6 +75,7 @@ class Store:
         # Used to decide when two records are the same company (see company_domain).
         self.shared_hosting: tuple[str, ...] = SHARED_HOSTING
         self.freemail: set[str] = set()
+        self.askable_freemail: tuple[str, ...] = ("gmail.com", "googlemail.com")   # mailbox check asks these
         self.conn.commit()
 
     # Columns added after the first release; older databases get them here.
@@ -673,10 +674,11 @@ class Store:
                  SUM(e.mailbox_check IS NOT NULL) AS mailbox_checked,
                  SUM(e.mailbox_check = 'valid') AS mailbox_confirmed,
                  SUM(e.mailbox_check IS NULL AND e.status = 'valid'
-                     AND COALESCE(e.is_freemail, 0) = 0) AS mailbox_todo
+                     AND (COALESCE(e.is_freemail, 0) = 0
+                          OR LOWER(SUBSTR(e.email, INSTR(e.email, '@') + 1)) IN ({}))) AS mailbox_todo
                FROM emails e JOIN run_businesses rb ON rb.business_id = e.business_id
-               WHERE rb.run_id = ?""",
-            (run_id,),
+               WHERE rb.run_id = ?""".format(",".join("?" * len(self.askable_freemail)) or "NULL"),
+            (*self.askable_freemail, run_id),
         )
         stats = {k: int(b[k] or 0) for k in b.keys()}
         stats.update({k: int(e[k] or 0) for k in e.keys()})

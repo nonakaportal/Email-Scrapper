@@ -50,6 +50,10 @@ email:
   smtp_concurrency: 8
   smtp_timeout_seconds: 10
   smtp_cache_days: 14
+  # Free-mail providers whose servers answer honestly (tested: Gmail says "does not exist" for a
+  # made-up address). Other free-mail addresses (Yahoo, Outlook, Hotmail ...) are not asked:
+  # they hang up on home internet connections.
+  smtp_check_free_domains: [gmail.com, googlemail.com]
   # With full verification: guess the email of decision makers named on the website
   # without a published address (from the company's own format, e.g. rebecca@ -> chris@)
   # and keep it only when the mail server confirms it. Shown in yellow; written emails first.

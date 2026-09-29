@@ -147,10 +147,10 @@ def test_full_run_asks_mail_servers(cfg, store):
     assert emails["info@smilestudio.com"]["status"] == "risky"
     assert emails["info@smilestudio.com"]["is_catch_all"] == 1
     assert emails["billing@smilestudio.com"]["status"] == "invalid"          # server: no such mailbox
-    assert emails["dr.lee@gmail.com"]["mailbox_check"] is None               # Gmail is never asked
+    assert emails["dr.lee@gmail.com"]["mailbox_check"] == "invalid"          # Gmail is asked too (answers honestly)
     assert emails["frontdesk@mapemaildental.com"]["mailbox_check"] is None   # already invalid (no domain)
-    assert [host for host, _ in calls] == ["mx1.mailhost.net"]               # one connection per domain
-    assert stats["mailbox_checked"] == 3 and stats["mailbox_confirmed"] == 1 and stats["mailbox_todo"] == 0
+    assert sorted(len(e) for _, e in calls) == [1, 3]      # one connection per domain: gmail.com, smilestudio.com
+    assert stats["mailbox_checked"] == 4 and stats["mailbox_confirmed"] == 1 and stats["mailbox_todo"] == 0
 
 
 def test_basic_run_does_not_ask(cfg, store):
@@ -181,7 +181,7 @@ def test_check_mailboxes_on_old_run(cfg, store):
     checker, calls = make_checker(cfg, store, {"anna@smilestudio.com": ("valid", "ok")})
     manager._mailbox_checker = checker
     stats = manager.check_mailboxes(run_id)
-    assert stats["mailbox_checked"] == 3 and len(calls) == 1
+    assert stats["mailbox_checked"] == 4 and len(calls) == 2           # smilestudio.com and gmail.com
     assert store.scalar("SELECT status FROM emails WHERE email = 'billing@smilestudio.com'") == "invalid"
 
 

@@ -143,3 +143,16 @@ def test_other_contacts_columns_csv():
                        "email_3", "name_3", "designation_3"]
     assert rows[1] == ["A", "a@a.com", "b@a.com", "Bea Diaz", "Owner", "info@a.com", "", "General inbox"]
     assert rows[2] == ["B", "x@b.com", "", "", "", "", "", ""]
+
+
+def test_mailbox_check_asks_gmail_but_not_yahoo(cfg, store):
+    manager, run_id, bid, asked = setup(cfg, store, {
+        "bob.plumbing@gmail.com": ("valid", "mailbox exists (mail server confirmed)")})
+    for email in ("bob.plumbing@gmail.com", "bobplumbing@yahoo.com"):
+        store.add_email(bid, email, email_type="personal", source="website",
+                        found_on_url="https://centralelectricsa.com/contact", is_freemail=True)
+        store.conn.execute("UPDATE emails SET status = 'valid' WHERE email = ?", (email,))
+    store.conn.commit()
+    manager._mailbox_check(run_id)
+    assert "bob.plumbing@gmail.com" in asked and "bobplumbing@yahoo.com" not in asked
+    assert store.one("SELECT mailbox_check FROM emails WHERE email = 'bob.plumbing@gmail.com'")[0] == "valid"

@@ -281,7 +281,9 @@ place search (Nominatim: name -> border)  ->  Overture Maps (businesses in that 
   - the server accepts any address (catch-all): **risky**
   - no answer, or it refused to talk to us: the basic result stays, marked "not confirmed"
 
-  Gmail, Outlook and Yahoo addresses are not asked, because they don't give real answers. Checks
+  Gmail addresses are asked too (Gmail says "does not exist" for a made-up address). Yahoo,
+  Outlook and Hotmail addresses are not, because their servers hang up on home internet
+  connections; the list is `email.smtp_check_free_domains` in the settings. Checks
   are slow on purpose: about 6 connections a minute per mail provider, one connection per company
   domain. Answers are cached for 14 days.
 

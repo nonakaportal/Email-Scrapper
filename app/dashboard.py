@@ -345,7 +345,8 @@ def verification_choice(key: str) -> str:
                     format_func=VERIFY_MODES.get, key=f"verify_{key}", label_visibility="collapsed",
                     help="Full also asks each company's mail server whether the mailbox exists, then hangs "
                          "up (no email is sent). Catches people who left and typos; catch-all servers "
-                         "become Risky. Gmail/Outlook/Yahoo addresses are not asked. Slower: about "
+                         "become Risky. Gmail addresses are asked too; Yahoo/Outlook/Hotmail are not "
+                         "(they refuse home internet). Slower: about "
                          "6 checks a minute per mail provider.")
     if mode == "full" and not port25_status():
         st.warning("Port 25 is blocked on this network, so mail servers can't be asked. The run will "

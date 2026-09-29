@@ -110,6 +110,7 @@ class RunManager:
         # What counts as "the same company" when records are added or merged.
         store.shared_hosting = tuple(SHARED_HOSTING) + tuple(cfg.get("shared_hosting_domains") or ())
         store.freemail = set(self.email_rules.freemail)
+        store.askable_freemail = tuple(d.lower() for d in cfg.get("email.smtp_check_free_domains") or ())
 
     # -------------------------------------------------------------- helpers
 
@@ -793,13 +794,16 @@ class RunManager:
             self._mailbox_checker = MailboxChecker(self.cfg, self.store)
         return self._mailbox_checker
 
+    def _mailbox_askable(self, email: str) -> bool:
+        return (not self.email_rules.is_freemail(email)
+                or email.rsplit("@", 1)[-1].lower() in self.store.askable_freemail)
+
     def _mailbox_check(self, run_id: int, retry_unknown: bool = False) -> int:
-        """Ask the mail servers whether valid-looking company addresses really exist.
-        Free-mail addresses (gmail.com ...) are skipped: those servers don't answer."""
+        """Ask the mail servers whether valid-looking addresses really exist. Free-mail addresses
+        are skipped, except providers that answer honestly (Gmail; email.smtp_check_free_domains)."""
         where = "e.status = 'valid' AND (e.mailbox_check IS NULL"
         where += " OR e.mailbox_check = 'unknown')" if retry_unknown else ")"
-        todo = [r for r in self.store.run_emails(run_id, where)
-                if not self.email_rules.is_freemail(r["email"])]
+        todo = [r for r in self.store.run_emails(run_id, where) if self._mailbox_askable(r["email"])]
         if not todo:
             return 0
         checker = self.mailbox_checker
