@@ -338,7 +338,7 @@ def test_contacts_with_designations(cfg, store, counters):
     data = write_export(store, ExportFilters(only_new=False), export_dir=cfg.export_dir)[0].read_text(
         encoding="utf-8-sig")
     header = data.splitlines()[0].split(",")
-    assert header[:13] == ["business_name", "email", "contact_name", "designation", "decision_maker",
+    assert header[:14] == ["business_name", "website", "email", "contact_name", "designation", "decision_maker",
                            "owner_name", "owner_title", "email_2", "name_2", "designation_2",
                            "email_3", "name_3", "designation_3"]
     assert (lead["owner_name"], lead["owner_title"]) == ("Anna Lopez", "Owner & Lead Dentist")

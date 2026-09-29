@@ -4,11 +4,11 @@ cold-email tool expects on import, in order. Columns not listed are dropped."""
 from __future__ import annotations
 
 DEFAULT_COLUMNS = [
-    "business_name", "email", "contact_name", "designation", "decision_maker", "owner_name", "owner_title",
+    "business_name", "website", "email", "contact_name", "designation", "decision_maker", "owner_name", "owner_title",
     "other_contacts", "key_people",
     "email_status", "email_last_seen", "email_found_in", "business_activity", "activity_reason",
     "email_type", "first_name", "phone",
-    "website", "facebook", "instagram", "linkedin", "x_twitter", "youtube", "tiktok",
+    "facebook", "instagram", "linkedin", "x_twitter", "youtube", "tiktok",
     "industry", "city", "region", "country", "score", "platform", "source",
 ]
 SOCIAL_COLUMNS = [("facebook", "facebook"), ("instagram", "instagram"), ("x_twitter", "twitter"),
