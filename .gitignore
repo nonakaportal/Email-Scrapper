@@ -9,3 +9,6 @@ logs/
 config/settings.local.yaml
 data/overture/
 data/uploads/
+
+# Copies of a damaged database, kept locally only
+data/corrupt-backup/

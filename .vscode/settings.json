@@ -1,0 +1,7 @@
+{
+  // LeadScout's database and caches are binary files. Opening one in the text editor and
+  // saving it destroys it, so everything under data/ opens read-only.
+  "files.readonlyInclude": {
+    "data/**": true
+  }
+}
