@@ -20,7 +20,8 @@ ACTIVITY_LABELS = ("active", "likely active", "unclear", "likely closed")
 # The website's domain no longer exists (expired), as opposed to a temporary DNS hiccup.
 _DOMAIN_GONE = ("nxdomain",)      # confirmed by a DNS lookup (see RunManager._confirm_dead_domain)
 # Errors that still prove a website is there (it just didn't let us in).
-_SITE_THERE = ("http 401", "http 403", "http 429", "robots.txt", "blocked by robots")
+# ("robots.txt unavailable (HTTP 521)" is the opposite: the server is down.)
+_SITE_THERE = ("http 401", "http 403", "http 429", "robots.txt denies", "blocked by robots")
 
 
 def business_activity(b: Mapping, emails: list[Mapping] = (), this_year: int | None = None,
@@ -64,7 +65,8 @@ def business_activity(b: Mapping, emails: list[Mapping] = (), this_year: int | N
     if site_up:
         return "likely active", "website online (no dated content found)"
     if signs:
-        return "likely active", "; ".join(signs)
+        down = f"website not reachable ({get('error')[:60]}); " if has_site and error else ""
+        return "likely active", down + "; ".join(signs)
     if has_site and error:
         return "unclear", f"website not reachable ({get('error')[:60]})"
     return "unclear", "no website and no recent listing date"

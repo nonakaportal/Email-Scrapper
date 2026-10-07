@@ -150,3 +150,15 @@ def test_taken_over_website_gives_nothing(cfg, store):
 def test_renamed_site_is_related(old, new, name):
     from leadscout.normalize import redirect_kind
     assert redirect_kind(old, new, name) == "related"
+
+
+def test_server_down_is_not_website_online():
+    """yogakaihawaii.com: Cloudflare 521 (web server down) while the Meta listing is recent."""
+    b = {"website_status": "ok", "error": "robots.txt unavailable (HTTP 521)",
+         "listing_updated": "2026-09-14", "listing_provider": "meta"}
+    label, why = business_activity(b, today=TODAY)
+    assert label == "likely active" and "website online" not in why
+    assert why.startswith("website not reachable (robots.txt unavailable (HTTP 521))")
+    assert business_activity({**b, "listing_updated": None}, today=TODAY)[0] == "unclear"
+    # A site that deliberately keeps crawlers out is still there.
+    assert business_activity({**b, "error": "robots.txt denies access"}, today=TODAY)[0] == "active"
